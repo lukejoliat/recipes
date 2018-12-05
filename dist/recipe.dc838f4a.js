@@ -105,6 +105,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   // Override the current require with this new one
   return newRequire;
 })({"components/recipe/recipe.ts":[function(require,module,exports) {
+"use strict";
+
 var __extends = this && this.__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
     _extendStatics = Object.setPrototypeOf || {
@@ -131,18 +133,28 @@ var __extends = this && this.__extends || function () {
   };
 }();
 
+exports.__esModule = true;
+
 var Recipe =
 /** @class */
 function (_super) {
   __extends(Recipe, _super);
 
   function Recipe() {
-    return _super !== null && _super.apply(this, arguments) || this;
+    return _super.call(this) || this;
   }
+
+  Recipe.prototype.connectedCallback = function () {
+    var title = this.getAttribute("title");
+    this.attachShadow({
+      mode: "open"
+    }).innerHTML = "\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css\">\n    <a class=\"panel-block is-active\">\n    <span class=\"title\">" + title + "</span>\n    <span class=\"panel-icon\"><a class=\"delete\"></a></span>\n    </a>";
+  };
 
   return Recipe;
 }(HTMLElement);
 
+exports["default"] = Recipe;
 customElements.define("recipe-item", Recipe);
 },{}],"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -171,7 +183,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50030" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64940" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

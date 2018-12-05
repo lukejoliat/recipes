@@ -14,7 +14,7 @@ window.addEventListener("load", () => {
       event.preventDefault();
 
       // Highlight Active Menu on Click
-      const target: any = event.currentTarget;
+      const target = event.currentTarget;
       document.querySelector(".active").classList.remove("active");
       target.classList.add("active");
 

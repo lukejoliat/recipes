@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/handlebars": "^4.0.39",
     "@webcomponents/webcomponentsjs": "^2.2.1",
     "axios": "^0.18.0",
     "bulma": "^0.7.2",

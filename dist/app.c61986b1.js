@@ -10404,26 +10404,50 @@ if (typeof require !== 'undefined' && require.extensions) {
 
 exports.__esModule = true;
 exports["default"] = "\n  <div class=\"ui {{color}} inverted segment\" style=\"height:250px;\">\n  <br>\n    <h2 class=\"ui center aligned icon header\">\n      <i class=\"exclamation triangle icon\"></i>\n      <div class=\"content\">\n        {{title}}\n      <div class=\"sub header\">{{message}}</div>\n      </div>\n    </h2>\n  </div>";
-},{}],"components/currency-rates.ts":[function(require,module,exports) {
+},{}],"assets/data.ts":[function(require,module,exports) {
 "use strict";
 
 exports.__esModule = true;
-exports["default"] = "<h1 class=\"ui header\">Currency Rates</h1>\n<hr>";
-},{}],"components/exchange.ts":[function(require,module,exports) {
-"use strict";
-
-exports.__esModule = true;
-exports["default"] = "<h1 class=\"ui header\">Exchange Conversion</h1>\n<hr>";
-},{}],"components/historical.ts":[function(require,module,exports) {
-"use strict";
-
-exports.__esModule = true;
-exports["default"] = "<h1 class=\"ui header\">Historical Rates</h1>\n<hr>";
+exports["default"] = {
+  recipes: [{
+    id: 1,
+    title: "Cheese"
+  }, {
+    id: 1,
+    title: "Pasta"
+  }, {
+    id: 1,
+    title: "Bread"
+  }, {
+    id: 1,
+    title: "Salami"
+  }]
+};
 },{}],"components/recipes.ts":[function(require,module,exports) {
 "use strict";
 
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
 exports.__esModule = true;
-exports["default"] = "<recipe-item></recipe-item><recipe-item></recipe-item><recipe-item></recipe-item><recipe-item></recipe-item><recipe-item></recipe-item>";
+
+var data_1 = __importDefault(require("../assets/data"));
+
+var _a = data_1["default"].recipes,
+    recipes = _a === void 0 ? [] : _a;
+var recipeItems = "";
+recipes.map(function (recipe) {
+  return recipeItems += "<recipe-item title=\"" + recipe.title + "\"></recipe-item>";
+});
+exports["default"] = "<recipe-list><div slot=\"recipes\">" + recipeItems + "</div></recipe-list>";
+},{"../assets/data":"assets/data.ts"}],"components/recipe-form.ts":[function(require,module,exports) {
+"use strict";
+
+exports.__esModule = true;
+exports["default"] = "<create-recipe></create-recipe>";
 },{}],"router.ts":[function(require,module,exports) {
 "use strict";
 
@@ -10435,29 +10459,23 @@ var __importDefault = this && this.__importDefault || function (mod) {
 
 exports.__esModule = true;
 
-var Router = require("vanilla-router");
+var vanilla_router_1 = __importDefault(require("vanilla-router"));
 
-var hbars = require("handlebars");
+var handlebars_1 = __importDefault(require("handlebars"));
 
 var error_1 = __importDefault(require("./components/error"));
 
-var currency_rates_1 = __importDefault(require("./components/currency-rates"));
+var recipes_1 = __importDefault(require("./components/recipes"));
 
-var exchange_1 = __importDefault(require("./components/exchange"));
-
-var historical_1 = __importDefault(require("./components/historical"));
-
-var recipes_1 = __importDefault(require("./components/recipes")); // Compile Handlebar Templates
+var recipe_form_1 = __importDefault(require("./components/recipe-form")); // Compile Handlebar Templates
 
 
-var errorTemplate = hbars.compile(error_1["default"]);
-var ratesTemplate = hbars.compile(currency_rates_1["default"]);
-var exchangeTemplate = hbars.compile(exchange_1["default"]);
-var historicalTemplate = hbars.compile(historical_1["default"]);
-var recipesTemplate = hbars.compile(recipes_1["default"]);
+var errorTemplate = handlebars_1["default"].compile(error_1["default"]);
+var recipesTemplate = handlebars_1["default"].compile(recipes_1["default"]);
+var recipeFormTemplate = handlebars_1["default"].compile(recipe_form_1["default"]);
 var el = document.getElementById("app"); // Router Declaration
 
-var router = new Router({
+var router = new vanilla_router_1["default"]({
   mode: "history",
   page404: function page404(path) {
     var html = errorTemplate({
@@ -10471,28 +10489,107 @@ var router = new Router({
 exports.router = router;
 window.addEventListener("load", function () {
   router.add("/", function () {
-    var html = ratesTemplate();
-    el.innerHTML = html;
-  });
-  router.add("/exchange", function () {
-    var html = exchangeTemplate();
-    el.innerHTML = html;
-  });
-  router.add("/historical", function () {
-    var html = historicalTemplate();
-    el.innerHTML = html;
-  });
-  router.add("/recipes", function () {
     var html = recipesTemplate();
     el.innerHTML = html;
   });
+  router.add("/create", function () {
+    var html = recipeFormTemplate();
+    el.innerHTML = html;
+  });
 });
-},{"vanilla-router":"../node_modules/vanilla-router/index.js","handlebars":"../node_modules/handlebars/lib/index.js","./components/error":"components/error.ts","./components/currency-rates":"components/currency-rates.ts","./components/exchange":"components/exchange.ts","./components/historical":"components/historical.ts","./components/recipes":"components/recipes.ts"}],"app.ts":[function(require,module,exports) {
+},{"vanilla-router":"../node_modules/vanilla-router/index.js","handlebars":"../node_modules/handlebars/lib/index.js","./components/error":"components/error.ts","./components/recipes":"components/recipes.ts","./components/recipe-form":"components/recipe-form.ts"}],"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+var bundleURL = null;
+
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
+  }
+
+  return bundleURL;
+}
+
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp):\/\/[^)\n]+/g);
+
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
+
+  return '/';
+}
+
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp):\/\/.+)\/[^/]+$/, '$1') + '/';
+}
+
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+var bundle = require('./bundle-url');
+
+function updateLink(link) {
+  var newLink = link.cloneNode();
+
+  newLink.onload = function () {
+    link.remove();
+  };
+
+  newLink.href = link.href.split('?')[0] + '?' + Date.now();
+  link.parentNode.insertBefore(newLink, link.nextSibling);
+}
+
+var cssTimeout = null;
+
+function reloadCSS() {
+  if (cssTimeout) {
+    return;
+  }
+
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+
+    for (var i = 0; i < links.length; i++) {
+      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
+        updateLink(links[i]);
+      }
+    }
+
+    cssTimeout = null;
+  }, 50);
+}
+
+module.exports = reloadCSS;
+},{"./bundle-url":"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"scss/main.scss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"css/style.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"../scss/main.scss":"scss/main.scss","_css_loader":"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"app.ts":[function(require,module,exports) {
 "use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
 
 exports.__esModule = true;
 
 var router_1 = require("./router");
+
+var style_css_1 = __importDefault(require("./css/style.css"));
+
+console.log(style_css_1["default"]); // import * as createRecipe from "components/create-recipe/create-recipe.js";
 
 window.addEventListener("load", function () {
   // Navigate app to current url
@@ -10516,7 +10613,7 @@ window.addEventListener("load", function () {
     });
   });
 });
-},{"./router":"router.ts"}],"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./router":"router.ts","./css/style.css":"css/style.css"}],"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -10543,7 +10640,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64820" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54570" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
