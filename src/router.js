@@ -1,5 +1,6 @@
 import Router from 'vanilla-router';
 import error from './components/error';
+import { returnRecipes, createRecipe, deleteRecipe } from './utils/utils';
 const el = document.getElementById('app');
 let recipes = [
   { id: 1, title: 'Cheese' },
@@ -7,6 +8,7 @@ let recipes = [
   { id: 1, title: 'Bread' },
   { id: 1, title: 'Salami' }
 ];
+
 // Router Declaration
 const router = new Router({
   mode: 'history',
@@ -19,33 +21,27 @@ const router = new Router({
     el.innerHTML = html;
   }
 });
+
+// Delete
 document.addEventListener('delete', ({ detail }) => {
   recipes = deleteRecipe(detail);
-  el.innerHTML = returnRecipes();
+  el.innerHTML = returnRecipes(recipes);
 });
+
+// Create
 document.addEventListener('create', ({ detail }) => {
   recipes = createRecipe(detail);
-  el.innerHTML = returnRecipes();
+  el.innerHTML = returnRecipes(recipes);
 });
+
+// Routes
 window.addEventListener('load', () => {
   router.add('/', () => {
-    el.innerHTML = returnRecipes();
+    el.innerHTML = returnRecipes(recipes);
   });
   router.add('/create', () => {
     el.innerHTML = `<create-recipe></create-recipe>`;
   });
 });
-
-const returnRecipes = () => `
-<recipe-list>
-  <div slot="recipes">
-  ${recipes
-    .map(recipe => `<recipe-item title="${recipe.title}"></recipe-item>`)
-    .join('')}</div>
-</recipe-list>`;
-
-const deleteRecipe = title => recipes.filter(x => x.title !== title);
-
-const createRecipe = title => (recipes = [...recipes, { title }]);
 
 export { router };

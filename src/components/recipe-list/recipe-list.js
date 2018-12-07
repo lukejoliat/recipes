@@ -18,6 +18,18 @@ export default class RecipeList extends HTMLElement {
     ">all</a> <a>favorites</a></p>
     <slot name="recipes">No Recipes Found.</slot>
     </div>`;
+    this._shadowRoot.querySelector('input').addEventListener('keyup', e => {
+      const value = this.value || '';
+      this.dispatchEvent(
+        new CustomEvent('filter', { bubbles: true, detail: value })
+      );
+    });
+    // Filter
+    document.addEventListener('filter', ({ detail }) => {
+      recipes = recipes.filter(x => x.title.includes(detail));
+      el.innerHTML = returnRecipes(recipes);
+    });
   }
+  filter() {}
 }
 customElements.define('recipe-list', RecipeList);
