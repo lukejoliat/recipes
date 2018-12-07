@@ -116,10 +116,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
@@ -149,27 +145,12 @@ function (_HTMLElement) {
     _classCallCheck(this, RecipeList);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(RecipeList).call(this));
-    _this.root = _this.attachShadow({
-      mode: 'open'
+    _this._shadowRoot = _this.attachShadow({
+      mode: 'closed'
     });
-    _this.root.innerHTML = "\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css\">\n    <div data-role=\"container\">\n    <p class=\"panel-heading\">Recipes</p>\n    <div class=\"panel-block\">\n      <p class=\"control has-icons-left\">\n        <input class=\"input is-small\" type=\"text\" placeholder=\"search\" />\n        <span class=\"icon is-small is-left\">\n          <i class=\"fas fa-search\" aria-hidden=\"true\"></i>\n        </span>\n      </p>\n    </div>\n    <p class=\"panel-tabs\"><a class=\"is-active\" onClick=\"(".concat(_this.click, ")()\n    \">all</a> <a>favorites</a></p>\n    <slot name=\"recipes\">No Recipes Found.</slot>\n    </div>");
+    _this._shadowRoot.innerHTML = "\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css\">\n    <div data-role=\"container\">\n    <p class=\"panel-heading\">Recipes</p>\n    <div class=\"panel-block\">\n      <p class=\"control has-icons-left\">\n        <input class=\"input is-small\" type=\"text\" placeholder=\"search\" />\n        <span class=\"icon is-small is-left\">\n          <i class=\"fas fa-search\" aria-hidden=\"true\"></i>\n        </span>\n      </p>\n    </div>\n    <p class=\"panel-tabs\"><a class=\"is-active\" onClick=\"(".concat(_this.click, ")()\n    \">all</a> <a>favorites</a></p>\n    <slot name=\"recipes\">No Recipes Found.</slot>\n    </div>");
     return _this;
   }
-
-  _createClass(RecipeList, [{
-    key: "connectedCallback",
-    value: function connectedCallback() {
-      this.navContainer = this.root.querySelector('div');
-    }
-  }, {
-    key: "click",
-    value: function click() {
-      event = new CustomEvent('customEvent', {
-        test: 'test'
-      });
-      this.navContainer.dispatchEvent(event);
-    }
-  }]);
 
   return RecipeList;
 }(_wrapNativeSuper(HTMLElement));
@@ -203,7 +184,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49323" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56239" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

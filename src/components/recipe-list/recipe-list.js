@@ -1,10 +1,8 @@
 export default class RecipeList extends HTMLElement {
   constructor() {
     super();
-    this.root = this.attachShadow({
-      mode: 'open'
-    });
-    this.root.innerHTML = `
+    this._shadowRoot = this.attachShadow({ mode: 'closed' });
+    this._shadowRoot.innerHTML = `
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
     <div data-role="container">
     <p class="panel-heading">Recipes</p>
@@ -20,15 +18,6 @@ export default class RecipeList extends HTMLElement {
     ">all</a> <a>favorites</a></p>
     <slot name="recipes">No Recipes Found.</slot>
     </div>`;
-  }
-  connectedCallback() {
-    this.navContainer = this.root.querySelector('div');
-  }
-  click() {
-    event = new CustomEvent('customEvent', {
-      test: 'test'
-    });
-    this.navContainer.dispatchEvent(event);
   }
 }
 customElements.define('recipe-list', RecipeList);

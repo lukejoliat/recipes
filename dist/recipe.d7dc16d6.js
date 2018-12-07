@@ -152,10 +152,22 @@ function (_HTMLElement) {
   _createClass(Recipe, [{
     key: "connectedCallback",
     value: function connectedCallback() {
-      var title = this.getAttribute("title");
-      this.attachShadow({
-        mode: "open"
-      }).innerHTML = "\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css\">\n    <style>\n      .panel-block { align-items: center; }\n      .recipe-title { flex: 1; }\n    </style>\n    <link rel=\"stylesheet\" href=\"./recipe.css\">\n    <a class=\"panel-block is-active\">\n    <span class=\"recipe-title\">".concat(title, "</span>\n    <span class=\"panel-icon\"><button class=\"delete\"></button></span>\n    </a>");
+      var _this = this;
+
+      var title = this.getAttribute('title');
+      this._shadowRoot = this.attachShadow({
+        mode: 'open'
+      });
+      this._shadowRoot.innerHTML = "\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css\">\n    <style>\n      .panel-block { align-items: center; }\n      .recipe-title { flex: 1; }\n    </style>\n    <a class=\"panel-block is-active\">\n    <span class=\"recipe-title\">".concat(title, "</span>\n    <span class=\"panel-icon\"><button class=\"delete\"></button></span>\n    </a>");
+
+      var deleteButton = this._shadowRoot.querySelector('.delete');
+
+      deleteButton.addEventListener('click', function () {
+        _this.dispatchEvent(new CustomEvent('delete', {
+          bubbles: true,
+          detail: title
+        }));
+      });
     }
   }]);
 
@@ -163,7 +175,7 @@ function (_HTMLElement) {
 }(_wrapNativeSuper(HTMLElement));
 
 exports.default = Recipe;
-customElements.define("recipe-item", Recipe);
+customElements.define('recipe-item', Recipe);
 },{}],"../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -191,7 +203,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49323" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56239" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
