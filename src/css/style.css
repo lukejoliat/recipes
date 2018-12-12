@@ -1,2 +1,3 @@
-@import "bulma/css/bulma.css";
-@import "../scss/main.scss";
+@import 'bulma';
+@import 'fontawesome';
+@import '../scss/main.scss';

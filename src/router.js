@@ -1,13 +1,7 @@
 import Router from 'vanilla-router';
 import error from './components/error';
-import { returnRecipes, createRecipe, deleteRecipe } from './utils/utils';
+import { deleteRecipe, createRecipe, getRecipes } from './utils/data';
 const el = document.getElementById('app');
-let recipes = [
-  { id: 1, title: 'Cheese' },
-  { id: 1, title: 'Pasta' },
-  { id: 1, title: 'Bread' },
-  { id: 1, title: 'Salami' }
-];
 
 // Router Declaration
 const router = new Router({
@@ -22,25 +16,21 @@ const router = new Router({
   }
 });
 
-// Delete
-document.addEventListener('delete', ({ detail }) => {
-  recipes = deleteRecipe(detail);
-  el.innerHTML = returnRecipes(recipes);
-});
-
-// Create
-document.addEventListener('create', ({ detail }) => {
-  recipes = createRecipe(detail);
-  el.innerHTML = returnRecipes(recipes);
-});
-
 // Routes
 window.addEventListener('load', () => {
   router.add('/', () => {
-    el.innerHTML = returnRecipes(recipes);
+    el.innerHTML = `<recipe-list></recipe-list>`;
+    el.querySelector('recipe-list').recipes = getRecipes();
+    document.addEventListener('delete', event => {
+      deleteRecipe(event.detail);
+      el.querySelector('recipe-list').recipes = getRecipes();
+    });
   });
   router.add('/create', () => {
     el.innerHTML = `<create-recipe></create-recipe>`;
+    el.querySelector('create-recipe').addEventListener('create', event =>
+      createRecipe(getRecipes(), event.detail)
+    );
   });
 });
 
