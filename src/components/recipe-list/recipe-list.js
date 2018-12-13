@@ -3,8 +3,11 @@ export default class RecipeList extends HTMLElement {
     super();
     this._shadowRoot = this.attachShadow({ mode: 'open' });
     this._recipes = [];
+    this._isFavorites = false;
     this.$recipeList = null;
     this.$filter = null;
+    this.$all = null;
+    this.$favorites = null;
   }
   connectedCallback() {
     this._shadowRoot.innerHTML = `
@@ -16,33 +19,50 @@ export default class RecipeList extends HTMLElement {
         <input class="input is-small" type="text" placeholder="search" />
       </p>
     </div>
-    <p class="panel-tabs"><a class="is-active">all</a> <a>favorites</a></p>
+    <p class="panel-tabs"><a class="all-recipes is-active">all</a><a class="favorite-recipes">favorites</a></p>
     <div class="recipe-list"></div>
     </div>`;
     this.$recipeList = this._shadowRoot.querySelector('.recipe-list');
     this.$filter = this._shadowRoot.querySelector('input');
-    this.$filter.addEventListener('keyup', this._filter.bind(this));
+    this.$favorites = this._shadowRoot.querySelector('.favorite-recipes');
+    this.$all = this._shadowRoot.querySelector('.all-recipes');
+    this.$filter.addEventListener('keyup', () => this._filter());
+    this.$favorites.addEventListener('click', () => {
+      this._isFavorites = true;
+      this.$favorites.classList.add('is-active');
+      this.$all.classList.remove('is-active');
+      this._favorites();
+    });
+    this.$all.addEventListener('click', () => {
+      this.$favorites.classList.remove('is-active');
+      this.$all.classList.add('is-active');
+      this._isFavorites = false;
+      this._render(this._recipes);
+    });
   }
   _render(recipes = []) {
     this.$recipeList.innerHTML = recipes.length
-      ? recipes
-          .map(
-            r =>
-              `<recipe-item id="${r.id}" title="${r.title}" ingredients="${
-                r.ingredients
-              }"></recipe-item>`
-          )
-          .join('')
+      ? recipes.map(r => `<recipe-item></recipe-item>`).join('')
       : `<a class="panel-block is-active"><span class="recipe-title">Sorry, no recipes could be found.</span>`;
+    this._shadowRoot
+      .querySelectorAll('recipe-item')
+      .forEach((r, i) => (r.recipe = recipes[i]));
   }
   _filter() {
     const { value = `` } = this.$filter;
-    this._render(this._recipes.filter(r => r.title.startsWith(value)));
+    this._isFavorites
+      ? this._render(
+          this._recipes.filter(r => r.title.startsWith(value) && r.favorite)
+        )
+      : this._render(this._recipes.filter(r => r.title.startsWith(value)));
+  }
+  _favorites() {
+    this._render(this._recipes.filter(r => r.favorite));
   }
   set recipes(data = []) {
     if (data === this._recipes) return;
     this._recipes = data;
-    this._render(data);
+    this._isFavorites ? this._favorites() : this._render(this._recipes);
   }
   get recipes() {
     return this._recipes;

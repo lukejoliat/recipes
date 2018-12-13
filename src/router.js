@@ -1,6 +1,12 @@
 import Router from 'vanilla-router';
 import error from './components/error';
-import { deleteRecipe, createRecipe, getRecipes } from './utils/data';
+import {
+  deleteRecipe,
+  createRecipe,
+  getRecipes,
+  favoriteRecipe,
+  unFavoriteRecipe
+} from './utils/data';
 const el = document.getElementById('app');
 
 // Router Declaration
@@ -24,6 +30,14 @@ window.addEventListener('load', () => {
     document.addEventListener('delete', event => {
       deleteRecipe(event.detail);
       el.querySelector('recipe-list').recipes = getRecipes();
+    });
+    document.addEventListener('togglefavorite', event => {
+      if (event.detail && event.detail.id) {
+        event.detail.favorite
+          ? unFavoriteRecipe(event.detail.id)
+          : favoriteRecipe(event.detail.id);
+        el.querySelector('recipe-list').recipes = getRecipes();
+      }
     });
   });
   router.add('/create', () => {

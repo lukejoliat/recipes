@@ -2,45 +2,63 @@ export default class Modal extends HTMLElement {
   constructor() {
     super();
     this._shadowRoot = this.attachShadow({ mode: 'open' });
+    this._open = false;
+    this._recipe = null;
+    this._editing = false;
   }
   connectedCallback() {
     this._shadowRoot.innerHTML = `
     <head>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
     </head>
     <div class="modal">
-        <div class="modal-background"></div>
+      <div class="modal-background"></div>
         <div class="modal-card">
-            <header class="modal-card-head">
-            <p class="modal-card-title">Modal title</p>
-            <button class="delete close" aria-label="close"></button>
-            </header>
-            <section class="modal-card-body">
-            <h2>${this._title}</h2>
-            <p>${this._ingredients}</p>
-            </section>
-            <footer class="modal-card-foot">
-            <button class="button is-success close">Save changes</button>
-            <button class="button close">Cancel</button>
-            </footer>
-        </div>
+        <header class="modal-card-head">
+          <p class="modal-card-title">Modal title</p>
+          <button class="delete close" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+          <h2></h2>
+          <p></p>
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button">Edit</button>
+          <button class="button close">Close</button>
+        </footer>
+      </div>
     </div>`;
+    this._shadowRoot
+      .querySelectorAll('.close')
+      .forEach(i => i.addEventListener('click', () => this._closeModal()));
   }
-  observedAttributes() {
-    return ['open'];
+  _render({ id, title, ingredients, favorite }) {
+    this._shadowRoot.querySelector('.modal-card-body h2').innerHTML = title;
+    this._shadowRoot.querySelector(
+      '.modal-card-body p'
+    ).innerHTML = ingredients;
   }
   _openModal(modal) {
     this._shadowRoot.querySelector('.modal').classList.add('is-active');
   }
   _closeModal(modal) {
-    modal.classList.remove('is-active');
+    this._shadowRoot.querySelector('.modal').classList.remove('is-active');
   }
   get open() {
     return this._open;
   }
-  set open(value) {
-    this._open = value;
-    this._openModal();
+  set open(value = false) {
+    if (this._open !== value) {
+      this._open = value;
+      value === true ? this._openModal() : this._closeModal();
+    }
+  }
+  get recipe() {
+    return this._recipe;
+  }
+  set recipe(recipe) {
+    this._recipe = recipe;
+    this._render(this._recipe);
   }
 }
 

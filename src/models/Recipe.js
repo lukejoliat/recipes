@@ -7,5 +7,6 @@ export default class Recipe {
         .substr(2, 9);
     this.title = title;
     this.ingredients = ingredients;
+    this.favorite = false;
   }
 }

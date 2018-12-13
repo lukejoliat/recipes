@@ -9,10 +9,7 @@ class CreateRecipe extends HTMLElement {
   connectedCallback() {
     this._shadowRoot.innerHTML = `
     <head><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
-    <link href="https://unpkg.com/ionicons@4.4.8/dist/css/ionicons.min.css" rel="stylesheet"></head>
-    <link rel="stylesheet" href="../../../node_modules/font-awesome/css/font-awesome.min.css">
     <div class="field">
-    <i class="icon ion-md-heart"></i>
       <label class="label">Name *</label>
       <input class="input" type="text" required />
     </div>
