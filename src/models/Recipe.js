@@ -8,5 +8,6 @@ export default class Recipe {
     this.title = title;
     this.ingredients = ingredients;
     this.favorite = false;
+    this.image = null;
   }
 }

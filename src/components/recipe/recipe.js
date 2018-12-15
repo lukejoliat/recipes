@@ -21,7 +21,7 @@ export default class Recipe extends HTMLElement {
       <span class="has-text-info modal-button favorite" data-target="modal" aria-haspopup="true"></span>
       <span class="panel-icon"><button class="delete"></button></span>
     </a>
-    <recipe-modal open="false"></recipe-modal>`;
+    <recipe-modal></recipe-modal>`;
     this._modal = this._shadowRoot.querySelector('recipe-modal');
     this._shadowRoot
       .querySelector('.delete')

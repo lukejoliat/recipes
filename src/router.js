@@ -5,7 +5,8 @@ import {
   createRecipe,
   getRecipes,
   favoriteRecipe,
-  unFavoriteRecipe
+  unFavoriteRecipe,
+  editRecipe
 } from './utils/data';
 const el = document.getElementById('app');
 
@@ -37,6 +38,11 @@ window.addEventListener('load', () => {
           ? unFavoriteRecipe(event.detail.id)
           : favoriteRecipe(event.detail.id);
         el.querySelector('recipe-list').recipes = getRecipes();
+      }
+    });
+    document.addEventListener('edit', event => {
+      if (event.detail && event.detail.id) {
+        editRecipe(event.detail);
       }
     });
   });

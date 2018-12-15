@@ -38,20 +38,19 @@ export default class Modal extends HTMLElement {
       '.modal-card-body p'
     ).innerHTML = ingredients;
   }
-  _openModal(modal) {
+  _openModal() {
+    this._open = true;
     this._shadowRoot.querySelector('.modal').classList.add('is-active');
   }
-  _closeModal(modal) {
+  _closeModal() {
+    this._open = false;
     this._shadowRoot.querySelector('.modal').classList.remove('is-active');
   }
   get open() {
     return this._open;
   }
-  set open(value = false) {
-    if (this._open !== value) {
-      this._open = value;
-      value === true ? this._openModal() : this._closeModal();
-    }
+  set open(value) {
+    value === true ? this._openModal() : this._closeModal();
   }
   get recipe() {
     return this._recipe;

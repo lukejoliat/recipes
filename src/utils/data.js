@@ -7,6 +7,16 @@ const deleteRecipe = id => {
   localStorage.setItem('recipes', JSON.stringify(recipes));
 };
 
+const editRecipe = recipe => {
+  const recipes = getRecipes();
+  recipes.forEach(r => {
+    if (r.id === recipe.id) {
+      r = recipe;
+    }
+  });
+  localStorage.setItem('recipes', JSON.stringify(recipes));
+};
+
 const createRecipe = (recipes = [], recipe) => {
   const items = JSON.stringify([...recipes, new Recipe(recipe)]);
   localStorage.setItem('recipes', items);
@@ -36,5 +46,6 @@ export {
   getRecipes,
   getRecipe,
   favoriteRecipe,
-  unFavoriteRecipe
+  unFavoriteRecipe,
+  editRecipe
 };
