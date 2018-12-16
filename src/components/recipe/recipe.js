@@ -1,11 +1,11 @@
-import RecipeItem from '../../models/Recipe';
+/* global HTMLElement */
 export default class Recipe extends HTMLElement {
-  constructor() {
-    super();
-    this._shadowRoot = this.attachShadow({ mode: 'open' });
-    this._recipe = null;
+  constructor () {
+    super()
+    this._shadowRoot = this.attachShadow({ mode: 'open' })
+    this._recipe = null
   }
-  connectedCallback() {
+  connectedCallback () {
     this._shadowRoot.innerHTML = `
     <head>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
@@ -21,49 +21,65 @@ export default class Recipe extends HTMLElement {
       <span class="has-text-info modal-button favorite" data-target="modal" aria-haspopup="true"></span>
       <span class="panel-icon"><button class="delete"></button></span>
     </a>
-    <recipe-modal></recipe-modal>`;
-    this._modal = this._shadowRoot.querySelector('recipe-modal');
+    <recipe-modal></recipe-modal>`
+    this._modal = this._shadowRoot.querySelector('recipe-modal')
     this._shadowRoot
       .querySelector('.delete')
-      .addEventListener('click', () => this._delete());
+      .addEventListener('click', () => this._delete())
     this._shadowRoot
       .querySelector('.open')
-      .addEventListener('click', () => this._toggleModal());
+      .addEventListener('click', () => this._toggleModal())
     this._shadowRoot
       .querySelector('.favorite')
-      .addEventListener('click', () => this._toggleFavorite());
+      .addEventListener('click', () => this._toggleFavorite())
   }
-  _render(title) {
-    this._shadowRoot.querySelector('.recipe-title').innerHTML = title;
+  detachedCallback () {
+    this._shadowRoot
+      .querySelector('.delete')
+      .removeEventListener('click', () => this._delete())
+    this._shadowRoot
+      .querySelector('.open')
+      .removeEventListener('click', () => this._toggleModal())
+    this._shadowRoot
+      .querySelector('.favorite')
+      .removeEventListener('click', () => this._toggleFavorite())
+  }
+  _render (title) {
+    this._shadowRoot.querySelector('.recipe-title').innerHTML = title
     this._shadowRoot.querySelector('.favorite').innerHTML = this._recipe
       .favorite
       ? 'Unfavorite'
-      : 'Favorite';
+      : 'Favorite'
   }
-  _toggleModal() {
-    this._modal.open = !this._modal.open;
-    this._modal.recipe = this._recipe;
+  _toggleModal () {
+    this._modal.open = !this._modal.open
+    this._modal.recipe = this._recipe
   }
-  _delete() {
+  _delete () {
+    if (!this._recipe) return
     document.dispatchEvent(
-      new CustomEvent('delete', { bubbles: false, detail: this._recipe.id })
-    );
-  }
-  _toggleFavorite() {
-    document.dispatchEvent(
-      new CustomEvent('togglefavorite', {
+      new window.CustomEvent('delete', {
         bubbles: false,
-        detail: { id: this._recipe.id, favorite: this.recipe.favorite }
+        detail: this._recipe.id
       })
-    );
+    )
   }
-  get recipe() {
-    return this._recipe;
+  _toggleFavorite () {
+    if (!this._recipe) return
+    document.dispatchEvent(
+      new window.CustomEvent('togglefavorite', {
+        bubbles: false,
+        detail: { id: this._recipe.id, favorite: this._recipe.favorite }
+      })
+    )
   }
-  set recipe(recipe) {
-    this._recipe = recipe;
-    this._render(this._recipe.title);
+  get recipe () {
+    return this._recipe
+  }
+  set recipe (recipe = {}) {
+    this._recipe = recipe
+    this._render(this._recipe.title)
   }
 }
 
-customElements.define('recipe-item', Recipe);
+window.customElements.define('recipe-item', Recipe)

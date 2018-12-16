@@ -1,14 +1,10 @@
-import Router from 'vanilla-router';
-import error from './components/error';
-import {
-  deleteRecipe,
-  createRecipe,
-  getRecipes,
-  favoriteRecipe,
-  unFavoriteRecipe,
-  editRecipe
-} from './utils/data';
-const el = document.getElementById('app');
+import Router from 'vanilla-router'
+import error from './components/error'
+import { getRecipes } from './utils/data'
+import { registerGlobalEvents } from './events'
+
+const $el = document.getElementById('app')
+registerGlobalEvents($el)
 
 // Router Declaration
 const router = new Router({
@@ -18,40 +14,20 @@ const router = new Router({
       'yellow',
       'Error 404 - Page NOT Found!',
       `The path '/${path}' does not exist on this site`
-    );
-    el.innerHTML = html;
+    )
+    $el.innerHTML = html
   }
-});
+})
 
 // Routes
 window.addEventListener('load', () => {
-  router.add('/', () => {
-    el.innerHTML = `<recipe-list></recipe-list>`;
-    el.querySelector('recipe-list').recipes = getRecipes();
-    document.addEventListener('delete', event => {
-      deleteRecipe(event.detail);
-      el.querySelector('recipe-list').recipes = getRecipes();
-    });
-    document.addEventListener('togglefavorite', event => {
-      if (event.detail && event.detail.id) {
-        event.detail.favorite
-          ? unFavoriteRecipe(event.detail.id)
-          : favoriteRecipe(event.detail.id);
-        el.querySelector('recipe-list').recipes = getRecipes();
-      }
-    });
-    document.addEventListener('edit', event => {
-      if (event.detail && event.detail.id) {
-        editRecipe(event.detail);
-      }
-    });
-  });
+  router.add('/', async () => {
+    $el.innerHTML = `<recipe-list></recipe-list>`
+    $el.querySelector('recipe-list').recipes = await getRecipes()
+  })
   router.add('/create', () => {
-    el.innerHTML = `<create-recipe></create-recipe>`;
-    el.querySelector('create-recipe').addEventListener('create', event =>
-      createRecipe(getRecipes(), event.detail)
-    );
-  });
-});
+    $el.innerHTML = `<create-recipe></create-recipe>`
+  })
+})
 
-export { router };
+export { router }

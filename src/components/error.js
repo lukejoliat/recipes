@@ -8,4 +8,4 @@ export default (color, title, message) => `
       <div class="sub header">${message}</div>
       </div>
     </h2>
-  </div>`;
+  </div>`

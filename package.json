@@ -14,6 +14,7 @@
     "@types/handlebars": "^4.0.39",
     "@webcomponents/webcomponentsjs": "^2.2.1",
     "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
     "bulma": "^0.7.2",
     "express": "^4.16.4",
     "font-awesome": "^4.7.0",
@@ -23,6 +24,13 @@
     "vanilla-router": "^1.2.7"
   },
   "devDependencies": {
+    "eslint": "^5.10.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^8.0.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "jest": "^23.6.0",
     "sass": "^1.15.1",
     "typescript": "^3.2.1"
   }

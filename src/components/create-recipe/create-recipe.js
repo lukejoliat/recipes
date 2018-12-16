@@ -1,12 +1,13 @@
-import { router } from '../../router';
+/* global HTMLElement */
+import { router } from '../../router'
 class CreateRecipe extends HTMLElement {
-  constructor() {
-    super();
+  constructor () {
+    super()
     this._shadowRoot = this.attachShadow({
       mode: 'closed'
-    });
+    })
   }
-  connectedCallback() {
+  connectedCallback () {
     this._shadowRoot.innerHTML = `
     <head><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
     <div class="field">
@@ -20,26 +21,25 @@ class CreateRecipe extends HTMLElement {
     <div class="field is-grouped">
       <div class="control"><button class="button is-link create">Submit</button></div>
       <div class="control"><button class="button is-text cancel">Cancel</button></div>
-    </div>`;
+    </div>`
     this._shadowRoot
       .querySelector('.create')
-      .addEventListener('click', () => this._create());
+      .addEventListener('click', () => this._create())
     this._shadowRoot
       .querySelector('.cancel')
-      .addEventListener('click', () => router.navigateTo('/'));
+      .addEventListener('click', () => router.navigateTo('/'))
   }
-  _render() {}
-  _create() {
-    const title = this._shadowRoot.querySelector('input').value;
-    const ingredients = this._shadowRoot.querySelector('textarea').value;
-    this.dispatchEvent(
-      new CustomEvent('create', {
-        bubbles: true,
+  _create () {
+    const title = this._shadowRoot.querySelector('input').value
+    const ingredients = this._shadowRoot.querySelector('textarea').value
+    document.dispatchEvent(
+      new window.CustomEvent('create', {
+        bubbles: false,
         detail: { title, ingredients }
       })
-    );
-    router.navigateTo('/');
+    )
+    router.navigateTo('/')
   }
 }
 
-customElements.define('create-recipe', CreateRecipe);
+window.customElements.define('create-recipe', CreateRecipe)

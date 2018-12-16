@@ -1,71 +1,98 @@
+import debounce from '../../utils/utils'
+
+/* global HTMLElement */
 export default class RecipeList extends HTMLElement {
-  constructor() {
-    super();
-    this._shadowRoot = this.attachShadow({ mode: 'open' });
-    this._recipes = [];
-    this._isFavorites = false;
-    this.$recipeList = null;
-    this.$filter = null;
-    this.$all = null;
-    this.$favorites = null;
+  constructor () {
+    super()
+    this._shadowRoot = this.attachShadow({ mode: 'open' })
+    this._recipes = []
+    this._isFavorites = false
+    this._filterValue = ``
+    this.$recipeList = null
+    this.$filter = null
+    this.$all = null
+    this.$favorites = null
   }
-  connectedCallback() {
+  connectedCallback () {
     this._shadowRoot.innerHTML = `
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
     <div data-role="container">
-    <p class="panel-heading">Recipes</p>
-    <div class="panel-block">
-      <p class="control">
-        <input class="input is-small" type="text" placeholder="search" />
+      <p class="panel-heading">Recipes</p>
+      <div class="panel-block">
+        <p class="control">
+          <input class="input is-small" type="text" placeholder="search" />
+        </p>
+      </div>
+      <p class="panel-tabs">
+        <a class="all-recipes is-active">all</a><a class="favorite-recipes">favorites</a>
       </p>
-    </div>
-    <p class="panel-tabs"><a class="all-recipes is-active">all</a><a class="favorite-recipes">favorites</a></p>
-    <div class="recipe-list"></div>
-    </div>`;
-    this.$recipeList = this._shadowRoot.querySelector('.recipe-list');
-    this.$filter = this._shadowRoot.querySelector('input');
-    this.$favorites = this._shadowRoot.querySelector('.favorite-recipes');
-    this.$all = this._shadowRoot.querySelector('.all-recipes');
-    this.$filter.addEventListener('keyup', () => this._filter());
+      <div class="recipe-list"></div>
+    </div>`
+    this.$recipeList = this._shadowRoot.querySelector('.recipe-list')
+    this.$filter = this._shadowRoot.querySelector('input')
+    this.$favorites = this._shadowRoot.querySelector('.favorite-recipes')
+    this.$all = this._shadowRoot.querySelector('.all-recipes')
+    this.$filter.addEventListener('keyup', debounce(() => this._filter(), 150))
     this.$favorites.addEventListener('click', () => {
-      this._isFavorites = true;
-      this.$favorites.classList.add('is-active');
-      this.$all.classList.remove('is-active');
-      this._favorites();
-    });
+      this._isFavorites = true
+      this.$favorites.classList.add('is-active')
+      this.$all.classList.remove('is-active')
+      this._favorites()
+    })
     this.$all.addEventListener('click', () => {
-      this.$favorites.classList.remove('is-active');
-      this.$all.classList.add('is-active');
-      this._isFavorites = false;
-      this._render(this._recipes);
-    });
+      this._isFavorites = false
+      this.$all.classList.add('is-active')
+      this.$favorites.classList.remove('is-active')
+      this._render(this._recipes)
+    })
   }
-  _render(recipes = []) {
+  detachedCallback () {
+    this.$filter.removeEventListener(
+      'keyup',
+      debounce(() => this._filter(), 150)
+    )
+    this.$favorites.removeEventListener('click', () => {
+      this._isFavorites = true
+      this.$favorites.classList.add('is-active')
+      this.$all.classList.remove('is-active')
+      this._favorites()
+    })
+    this.$all.removeEventListener('click', () => {
+      this._isFavorites = false
+      this.$favorites.classList.remove('is-active')
+      this.$all.classList.add('is-active')
+      this._render(this._recipes)
+    })
+  }
+  _render (recipes = []) {
     this.$recipeList.innerHTML = recipes.length
       ? recipes.map(r => `<recipe-item></recipe-item>`).join('')
-      : `<a class="panel-block is-active"><span class="recipe-title">Sorry, no recipes could be found.</span>`;
+      : `<a class="panel-block is-active"><span class="recipe-title">Sorry, no recipes could be found.</span>`
     this._shadowRoot
       .querySelectorAll('recipe-item')
-      .forEach((r, i) => (r.recipe = recipes[i]));
+      .forEach((r, i) => (r.recipe = recipes[i]))
   }
-  _filter() {
-    const { value = `` } = this.$filter;
+  _filter () {
+    // TODO only rerender if results of filter are different
+    const { value } = this.$filter
+    if (value === this._filterValue) return
+    this._filterValue = value
     this._isFavorites
       ? this._render(
-          this._recipes.filter(r => r.title.startsWith(value) && r.favorite)
-        )
-      : this._render(this._recipes.filter(r => r.title.startsWith(value)));
+        this._recipes.filter(r => r.title.startsWith(value) && r.favorite)
+      )
+      : this._render(this._recipes.filter(r => r.title.startsWith(value)))
   }
-  _favorites() {
-    this._render(this._recipes.filter(r => r.favorite));
+  _favorites () {
+    this._render(this._recipes.filter(r => r.favorite))
   }
-  set recipes(data = []) {
-    if (data === this._recipes) return;
-    this._recipes = data;
-    this._isFavorites ? this._favorites() : this._render(this._recipes);
+  set recipes (data = []) {
+    if (data === this._recipes) return
+    this._recipes = data
+    this._isFavorites ? this._favorites() : this._render(this._recipes)
   }
-  get recipes() {
-    return this._recipes;
+  get recipes () {
+    return this._recipes
   }
 }
-customElements.define('recipe-list', RecipeList);
+window.customElements.define('recipe-list', RecipeList)

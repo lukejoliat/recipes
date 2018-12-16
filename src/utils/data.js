@@ -1,44 +1,59 @@
-import Recipe from '../models/Recipe';
+import Recipe from '../models/Recipe'
 
-const getRecipe = id => getRecipes().find(id);
+const getRecipe = id => getRecipes().find(id)
 
-const deleteRecipe = id => {
-  const recipes = getRecipes().filter(r => r.id !== id);
-  localStorage.setItem('recipes', JSON.stringify(recipes));
-};
+const deleteRecipe = id =>
+  new Promise(async (resolve, reject) => {
+    let recipes = await getRecipes()
+    recipes = recipes.filter(r => r.id !== id)
+    window.localStorage.setItem('recipes', JSON.stringify(recipes))
+    // eslint-disable-next-line prefer-promise-reject-errors
+    reject()
+  })
 
-const editRecipe = recipe => {
-  const recipes = getRecipes();
-  recipes.forEach(r => {
-    if (r.id === recipe.id) {
-      r = recipe;
-    }
-  });
-  localStorage.setItem('recipes', JSON.stringify(recipes));
-};
+const editRecipe = recipe =>
+  new Promise(async (resolve, reject) => {
+    const recipes = await getRecipes()
+    recipes.forEach((r, i) => {
+      if (r.id === recipe.id) {
+        recipes[i] = recipe
+      }
+    })
+    window.localStorage.setItem('recipes', JSON.stringify(recipes))
+    resolve()
+  })
 
-const createRecipe = (recipes = [], recipe) => {
-  const items = JSON.stringify([...recipes, new Recipe(recipe)]);
-  localStorage.setItem('recipes', items);
-};
+const createRecipe = (recipes = [], recipe) =>
+  new Promise((resolve, reject) => {
+    const items = JSON.stringify([...recipes, new Recipe(recipe)])
+    window.localStorage.setItem('recipes', items)
+    resolve(recipe)
+  })
 
-const favoriteRecipe = id => {
-  const recipes = getRecipes();
-  recipes.map(r => {
-    if (r.id === id) r.favorite = true;
-  });
-  localStorage.setItem('recipes', JSON.stringify(recipes));
-};
+const favoriteRecipe = id =>
+  new Promise(async (resolve, reject) => {
+    const recipes = await getRecipes()
+    recipes.map(r => {
+      if (r.id === id) r.favorite = true
+    })
+    window.localStorage.setItem('recipes', JSON.stringify(recipes))
+    resolve()
+  })
 
-const unFavoriteRecipe = id => {
-  const recipes = getRecipes();
-  recipes.map(r => {
-    if (r.id === id) r.favorite = false;
-  });
-  localStorage.setItem('recipes', JSON.stringify(recipes));
-};
+const unFavoriteRecipe = id =>
+  new Promise(async (resolve, reject) => {
+    const recipes = await getRecipes()
+    recipes.map(r => {
+      if (r.id === id) r.favorite = false
+    })
+    window.localStorage.setItem('recipes', JSON.stringify(recipes))
+    resolve()
+  })
 
-const getRecipes = () => JSON.parse(localStorage.getItem('recipes')) || [];
+const getRecipes = () =>
+  new Promise((resolve, reject) =>
+    resolve(JSON.parse(window.localStorage.getItem('recipes')) || [])
+  )
 
 export {
   deleteRecipe,
@@ -48,4 +63,4 @@ export {
   favoriteRecipe,
   unFavoriteRecipe,
   editRecipe
-};
+}
