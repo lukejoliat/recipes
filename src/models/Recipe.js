@@ -1,4 +1,4 @@
-export default class Recipe {
+export default class RecipeModel {
   constructor ({ title, ingredients }) {
     this.id =
       '_' +

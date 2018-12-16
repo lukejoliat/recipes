@@ -1,4 +1,5 @@
 /* global HTMLElement */
+import '@skatejs/ssr/register'
 export default class Recipe extends HTMLElement {
   constructor () {
     super()

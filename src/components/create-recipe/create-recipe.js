@@ -1,7 +1,7 @@
 import { router } from '../../router'
 
 /* global HTMLElement */
-class CreateRecipe extends HTMLElement {
+export default class CreateRecipe extends HTMLElement {
   constructor () {
     super()
     this._shadowRoot = this.attachShadow({
