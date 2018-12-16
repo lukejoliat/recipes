@@ -7,8 +7,7 @@ const deleteRecipe = id =>
     let recipes = await getRecipes()
     recipes = recipes.filter(r => r.id !== id)
     window.localStorage.setItem('recipes', JSON.stringify(recipes))
-    // eslint-disable-next-line prefer-promise-reject-errors
-    reject()
+    resolve()
   })
 
 const editRecipe = recipe =>
@@ -27,7 +26,7 @@ const createRecipe = (recipes = [], recipe) =>
   new Promise((resolve, reject) => {
     const items = JSON.stringify([...recipes, new Recipe(recipe)])
     window.localStorage.setItem('recipes', items)
-    resolve(recipe)
+    resolve()
   })
 
 const favoriteRecipe = id =>

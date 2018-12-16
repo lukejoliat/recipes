@@ -1,5 +1,6 @@
-/* global HTMLElement */
 import { router } from '../../router'
+
+/* global HTMLElement */
 class CreateRecipe extends HTMLElement {
   constructor () {
     super()

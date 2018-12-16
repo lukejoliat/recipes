@@ -1,6 +1,9 @@
 import 'babel-polyfill'
 import { router } from './router'
+import { registerGlobalEvents } from './events/events'
 window.addEventListener('load', () => {
+  // Register global CRUD events
+  registerGlobalEvents()
   // Navigate app to current url
   router.navigateTo(window.location.pathname)
 

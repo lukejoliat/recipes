@@ -1,10 +1,7 @@
 import Router from 'vanilla-router'
 import error from './components/error'
 import { getRecipes } from './utils/data'
-import { registerGlobalEvents } from './events'
-
 const $el = document.getElementById('app')
-registerGlobalEvents($el)
 
 // Router Declaration
 const router = new Router({
