@@ -25,7 +25,7 @@ const editRecipe = recipe =>
 
 const createRecipe = (recipes = [], recipe) =>
   new Promise((resolve, reject) => {
-    const items = JSON.stringify([...recipes, new Recipe(recipe)])
+    const items = JSON.stringify(recipes.concat(new Recipe(recipe)))
     localStorage.setItem('recipes', items)
     resolve()
   })

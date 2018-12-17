@@ -2,13 +2,13 @@ import { router } from '../../router'
 
 /* global HTMLElement */
 export default class CreateRecipe extends HTMLElement {
-  constructor () {
+  constructor() {
     super()
     this._shadowRoot = this.attachShadow({
       mode: 'closed'
     })
   }
-  connectedCallback () {
+  connectedCallback() {
     this._shadowRoot.innerHTML = `
     <head><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
     <div class="field">
@@ -30,7 +30,7 @@ export default class CreateRecipe extends HTMLElement {
       .querySelector('.cancel')
       .addEventListener('click', () => router.navigateTo('/'))
   }
-  _create () {
+  _create() {
     const title = this._shadowRoot.querySelector('input').value
     const ingredients = this._shadowRoot.querySelector('textarea').value
     document.dispatchEvent(

@@ -8,9 +8,7 @@ it('getRecipes return an empty array if there are no recipes', async () => {
 })
 
 it('createRecipe adds an item to the array of recipes', async () => {
-  await createRecipe(getRecipes(), new RecipeModel('test', 'ingredients'))
+  await createRecipe(await getRecipes(), new RecipeModel('test', 'ingredients'))
   const recipes = await getRecipes()
-  console.log(recipes)
-
   expect(recipes.length).toEqual(1)
 })
