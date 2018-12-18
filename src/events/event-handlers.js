@@ -8,6 +8,7 @@ import {
 } from '../utils/data'
 const $el = document.getElementById('app')
 
+// global events
 const handleDelete = async e => {
   await deleteRecipe(e.detail).catch(res =>
     window.alert('Could not perform this action.')
