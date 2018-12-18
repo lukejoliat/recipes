@@ -22,14 +22,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/handlebars": "^4.0.39",
     "@webcomponents/webcomponentsjs": "^2.2.1",
-    "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
     "bulma": "^0.7.2",
-    "express": "^4.16.4",
-    "font-awesome": "^4.7.0",
-    "fontawesome": "^4.7.2",
     "router": "^1.3.3",
     "scss": "^0.2.4",
     "vanilla-router": "^1.2.7"
@@ -43,6 +38,7 @@
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
     "babel-plugin-dynamic-import-node": "^2.2.0",
+    "cssnano": "^4.1.7",
     "eslint": "^5.10.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.14.0",
