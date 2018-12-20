@@ -11,3 +11,11 @@ export default class RecipeModel {
     this.image = null
   }
 }
+
+const isValidRecipe = (recipe = {}) => {
+  if (recipe.id && recipe.title && recipe.ingredients) {
+    return true
+  } else return false
+}
+
+export { isValidRecipe }

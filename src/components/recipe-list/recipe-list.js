@@ -1,4 +1,4 @@
-import debounce from '../../utils/utils'
+import { debounce } from '../../utils/utils'
 
 /* global HTMLElement */
 export default class RecipeList extends HTMLElement {

@@ -1,12 +1,12 @@
 /* global HTMLElement */
 // import '@skatejs/ssr/register'
 export default class Recipe extends HTMLElement {
-  constructor() {
+  constructor () {
     super()
     this._shadowRoot = this.attachShadow({ mode: 'open' })
     this._recipe = null
   }
-  connectedCallback() {
+  connectedCallback () {
     this._shadowRoot.innerHTML = `
     <head>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
@@ -34,7 +34,7 @@ export default class Recipe extends HTMLElement {
       .querySelector('.favorite')
       .addEventListener('click', () => this._toggleFavorite())
   }
-  detachedCallback() {
+  detachedCallback () {
     this._shadowRoot
       .querySelector('.delete')
       .removeEventListener('click', () => this._delete())
@@ -45,18 +45,18 @@ export default class Recipe extends HTMLElement {
       .querySelector('.favorite')
       .removeEventListener('click', () => this._toggleFavorite())
   }
-  _render(title) {
+  _render (title) {
     this._shadowRoot.querySelector('.recipe-title').innerHTML = title
     this._shadowRoot.querySelector('.favorite').innerHTML = this._recipe
       .favorite
       ? 'Unfavorite'
       : 'Favorite'
   }
-  _toggleModal() {
+  _toggleModal () {
     this._modal.open = !this._modal.open
     this._modal.recipe = this._recipe
   }
-  _delete() {
+  _delete () {
     if (!this._recipe) return
     document.dispatchEvent(
       new window.CustomEvent('delete', {
@@ -65,7 +65,7 @@ export default class Recipe extends HTMLElement {
       })
     )
   }
-  _toggleFavorite() {
+  _toggleFavorite () {
     if (!this._recipe) return
     document.dispatchEvent(
       new window.CustomEvent('togglefavorite', {
@@ -74,10 +74,10 @@ export default class Recipe extends HTMLElement {
       })
     )
   }
-  get recipe() {
+  get recipe () {
     return this._recipe
   }
-  set recipe(recipe = {}) {
+  set recipe (recipe = {}) {
     this._recipe = recipe
     this._render(this._recipe.title)
   }

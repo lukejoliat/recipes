@@ -19,4 +19,4 @@ const debounce = function (func, wait, immediate) {
     if (callNow) func.apply(context, args)
   }
 }
-export default debounce
+export { debounce }

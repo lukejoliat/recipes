@@ -1,13 +1,11 @@
 /* eslint-disable no-undef */
-import Recipe from '../models/Recipe'
-
-const getRecipe = id => getRecipes().find(id)
+const getRecipe = id => new Promise((resolve, reject) => getRecipes().find(id))
 
 const deleteRecipe = id =>
   new Promise(async (resolve, reject) => {
-    let recipes = await getRecipes()
-    recipes = recipes.filter(r => r.id !== id)
-    localStorage.setItem('recipes', JSON.stringify(recipes))
+    const recipes = await getRecipes()
+    const filteredRecipes = recipes.filter(r => r.id !== id)
+    localStorage.setItem('recipes', JSON.stringify(filteredRecipes))
     resolve()
   })
 
@@ -25,7 +23,7 @@ const editRecipe = recipe =>
 
 const createRecipe = (recipes = [], recipe) =>
   new Promise((resolve, reject) => {
-    const items = JSON.stringify(recipes.concat(new Recipe(recipe)))
+    const items = JSON.stringify(recipes.concat(recipe))
     localStorage.setItem('recipes', items)
     resolve()
   })

@@ -6,7 +6,6 @@ window.addEventListener('load', () => {
   registerGlobalEvents()
   // Navigate app to current url
   router.navigateTo(window.location.pathname)
-
   // Highlight Active Menu on Refresh/Page Reload
   const link = document.querySelector(`a[href$='${window.location.pathname}']`)
   link.classList.add('active')
