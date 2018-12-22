@@ -1,5 +1,5 @@
 /* global HTMLElement */
-// import '@skatejs/ssr/register'
+import template from './recipe.html'
 export default class Recipe extends HTMLElement {
   constructor () {
     super()
@@ -7,22 +7,7 @@ export default class Recipe extends HTMLElement {
     this._recipe = null
   }
   connectedCallback () {
-    this._shadowRoot.innerHTML = `
-    <head>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
-    </head>
-    <style>
-      .panel-block { align-items: center; }
-      .recipe-title { flex: 1; }
-    </style>
-    <a class="panel-block is-active">
-      <span class="recipe-title"></span>
-      <span class="has-text-info modal-button open" data-target="modal" aria-haspopup="true">Expand</span>
-      <span class="has-text-info modal-button" data-target="modal" aria-haspopup="true">|</span>
-      <span class="has-text-info modal-button favorite" data-target="modal" aria-haspopup="true"></span>
-      <span class="panel-icon"><button class="delete"></button></span>
-    </a>
-    <recipe-modal></recipe-modal>`
+    this._shadowRoot.innerHTML = template
     this._modal = this._shadowRoot.querySelector('recipe-modal')
     this._shadowRoot
       .querySelector('.delete')
