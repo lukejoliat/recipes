@@ -1,7 +1,6 @@
 {
   "name": "recipes",
   "jest": {
-    "testEnvironment": "@skatejs/ssr/jest",
     "verbose": true,
     "transform": {
       "^.+\\.jsx$": "babel-jest",
@@ -15,8 +14,7 @@
   "description": "This is a project demo that uses Vanilla JS to build a Single Page Application.",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "start:dev": "webpack-dev-server"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -25,15 +23,14 @@
     "@webcomponents/webcomponentsjs": "^2.2.1",
     "babel-polyfill": "^6.26.0",
     "bulma": "^0.7.2",
+    "fontawesome": "^4.7.2",
     "router": "^1.3.3",
-    "scss": "^0.2.4",
     "vanilla-router": "^1.2.7"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.0",
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.2.0",
-    "@skatejs/ssr": "^0.19.11",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
@@ -48,8 +45,6 @@
     "jest": "^23.6.0",
     "jest-localstorage-mock": "^2.3.0",
     "regenerator-runtime": "^0.13.1",
-    "sass": "^1.15.1",
-    "skatejs": "^5.2.4",
-    "typescript": "^3.2.1"
+    "sass": "^1.15.1"
   }
 }

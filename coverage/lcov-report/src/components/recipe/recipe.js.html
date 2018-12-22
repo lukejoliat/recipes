@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/components/recipe/recipe.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../index.html">All files</a> / <a href="index.html">src/components/recipe</a> recipe.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">12.9% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>4/31</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/7</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">6.67% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>1/15</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">13.79% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>4/29</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* global HTMLElement */
+// import '@skatejs/ssr/register'
+export default class Recipe extends HTMLElement {
+  constructor () {
+    super()
+    this._shadowRoot = this.attachShadow({ mode: 'open' })
+    this._recipe = null
+  }
+<span class="fstat-no" title="function not covered" >  co</span>nnectedCallback () {
+<span class="cstat-no" title="statement not covered" >    this._shadowRoot.innerHTML = `</span>
+    &lt;head&gt;
+      &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css"&gt;
+    &lt;/head&gt;
+    &lt;style&gt;
+      .panel-block { align-items: center; }
+      .recipe-title { flex: 1; }
+    &lt;/style&gt;
+    &lt;a class="panel-block is-active"&gt;
+      &lt;span class="recipe-title"&gt;&lt;/span&gt;
+      &lt;span class="has-text-info modal-button open" data-target="modal" aria-haspopup="true"&gt;Expand&lt;/span&gt;
+      &lt;span class="has-text-info modal-button" data-target="modal" aria-haspopup="true"&gt;|&lt;/span&gt;
+      &lt;span class="has-text-info modal-button favorite" data-target="modal" aria-haspopup="true"&gt;&lt;/span&gt;
+      &lt;span class="panel-icon"&gt;&lt;button class="delete"&gt;&lt;/button&gt;&lt;/span&gt;
+    &lt;/a&gt;
+    &lt;recipe-modal&gt;&lt;/recipe-modal&gt;`
+<span class="cstat-no" title="statement not covered" >    this._modal = this._shadowRoot.querySelector('recipe-modal')</span>
+<span class="cstat-no" title="statement not covered" >    this._shadowRoot</span>
+      .querySelector('.delete')
+      .addEventListener('click', <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >this._delete())</span>
+<span class="cstat-no" title="statement not covered" >    this._shadowRoot</span>
+      .querySelector('.open')
+      .addEventListener('click', <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >this._toggleModal())</span>
+<span class="cstat-no" title="statement not covered" >    this._shadowRoot</span>
+      .querySelector('.favorite')
+      .addEventListener('click', <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >this._toggleFavorite())</span>
+  }
+<span class="fstat-no" title="function not covered" >  de</span>tachedCallback () {
+<span class="cstat-no" title="statement not covered" >    this._shadowRoot</span>
+      .querySelector('.delete')
+      .removeEventListener('click', <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >this._delete())</span>
+<span class="cstat-no" title="statement not covered" >    this._shadowRoot</span>
+      .querySelector('.open')
+      .removeEventListener('click', <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >this._toggleModal())</span>
+<span class="cstat-no" title="statement not covered" >    this._shadowRoot</span>
+      .querySelector('.favorite')
+      .removeEventListener('click', <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >this._toggleFavorite())</span>
+  }
+<span class="fstat-no" title="function not covered" >  _r</span>ender (title) {
+<span class="cstat-no" title="statement not covered" >    this._shadowRoot.querySelector('.recipe-title').innerHTML = title</span>
+<span class="cstat-no" title="statement not covered" >    this._shadowRoot.querySelector('.favorite').innerHTML = this._recipe</span>
+      .favorite
+      ? 'Unfavorite'
+      : 'Favorite'
+  }
+<span class="fstat-no" title="function not covered" >  _t</span>oggleModal () {
+<span class="cstat-no" title="statement not covered" >    this._modal.open = !this._modal.open</span>
+<span class="cstat-no" title="statement not covered" >    this._modal.recipe = this._recipe</span>
+  }
+<span class="fstat-no" title="function not covered" >  _d</span>elete () {
+<span class="cstat-no" title="statement not covered" >    if (!this._recipe) <span class="cstat-no" title="statement not covered" >return</span></span>
+<span class="cstat-no" title="statement not covered" >    document.dispatchEvent(</span>
+      new window.CustomEvent('delete', {
+        bubbles: false,
+        detail: this._recipe.id
+      })
+    )
+  }
+<span class="fstat-no" title="function not covered" >  _t</span>oggleFavorite () {
+<span class="cstat-no" title="statement not covered" >    if (!this._recipe) <span class="cstat-no" title="statement not covered" >return</span></span>
+<span class="cstat-no" title="statement not covered" >    document.dispatchEvent(</span>
+      new window.CustomEvent('togglefavorite', {
+        bubbles: false,
+        detail: { id: this._recipe.id, favorite: this._recipe.favorite }
+      })
+    )
+  }
+<span class="fstat-no" title="function not covered" >  ge</span>t recipe () {
+<span class="cstat-no" title="statement not covered" >    return this._recipe</span>
+  }
+<span class="fstat-no" title="function not covered" >  se</span>t recipe (recipe = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> {
+<span class="cstat-no" title="statement not covered" >    this._recipe = recipe</span>
+<span class="cstat-no" title="statement not covered" >    this._render(this._recipe.title)</span>
+  }
+}
+&nbsp;
+window.customElements.define('recipe-item', Recipe)
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Dec 20 2018 00:08:12 GMT-0500 (EST)
+</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

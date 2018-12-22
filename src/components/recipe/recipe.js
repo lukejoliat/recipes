@@ -46,6 +46,7 @@ export default class Recipe extends HTMLElement {
       .removeEventListener('click', () => this._toggleFavorite())
   }
   _render (title) {
+    console.log(this._shadowRoot)
     this._shadowRoot.querySelector('.recipe-title').innerHTML = title
     this._shadowRoot.querySelector('.favorite').innerHTML = this._recipe
       .favorite
