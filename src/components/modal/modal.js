@@ -1,4 +1,5 @@
 /* global HTMLElement */
+import template from './modal.html'
 export default class Modal extends HTMLElement {
   constructor () {
     super()
@@ -8,26 +9,7 @@ export default class Modal extends HTMLElement {
     this._editing = false
   }
   connectedCallback () {
-    this._shadowRoot.innerHTML = `
-    <head>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
-    </head>
-    <div class="modal">
-      <div class="modal-background"></div>
-        <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title"></p>
-          <button class="delete close" aria-label="close"></button>
-        </header>
-        <section class="modal-card-body">
-          <h2></h2>
-          <p></p>
-        </section>
-        <footer class="modal-card-foot">
-          <button class="button action is-success"></button>
-        </footer>
-      </div>
-    </div>`
+    this._shadowRoot.innerHTML = template
     this._shadowRoot
       .querySelectorAll('.close')
       .forEach(i => i.addEventListener('click', () => this._closeModal()))

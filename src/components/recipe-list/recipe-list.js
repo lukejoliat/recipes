@@ -1,5 +1,5 @@
 import { debounce } from '../../utils/utils'
-
+import template from './recipe-list.html'
 /* global HTMLElement */
 export default class RecipeList extends HTMLElement {
   constructor () {
@@ -14,20 +14,7 @@ export default class RecipeList extends HTMLElement {
     this.$favorites = null
   }
   connectedCallback () {
-    this._shadowRoot.innerHTML = `
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
-    <div data-role="container">
-      <p class="panel-heading">Recipes</p>
-      <div class="panel-block">
-        <p class="control">
-          <input class="input is-small" type="text" placeholder="search" />
-        </p>
-      </div>
-      <p class="panel-tabs">
-        <a class="all-recipes is-active">all</a><a class="favorite-recipes">favorites</a>
-      </p>
-      <div class="recipe-list"></div>
-    </div>`
+    this._shadowRoot.innerHTML = template
     this.$recipeList = this._shadowRoot.querySelector('.recipe-list')
     this.$filter = this._shadowRoot.querySelector('input')
     this.$favorites = this._shadowRoot.querySelector('.favorite-recipes')
