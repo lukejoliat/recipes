@@ -33,24 +33,6 @@ export default class RecipeList extends HTMLElement {
       this._render(this._recipes)
     })
   }
-  detachedCallback () {
-    this.$filter.removeEventListener(
-      'keyup',
-      debounce(() => this._filter(), 150)
-    )
-    this.$favorites.removeEventListener('click', () => {
-      this._isFavorites = true
-      this.$favorites.classList.add('is-active')
-      this.$all.classList.remove('is-active')
-      this._favorites()
-    })
-    this.$all.removeEventListener('click', () => {
-      this._isFavorites = false
-      this.$favorites.classList.remove('is-active')
-      this.$all.classList.add('is-active')
-      this._render(this._recipes)
-    })
-  }
   _render (recipes = []) {
     this.$recipeList.innerHTML = recipes.length
       ? recipes.map(r => `<recipe-item></recipe-item>`).join('')

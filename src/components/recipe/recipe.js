@@ -19,17 +19,6 @@ export default class Recipe extends HTMLElement {
       .querySelector('.favorite')
       .addEventListener('click', () => this._toggleFavorite())
   }
-  detachedCallback () {
-    this._shadowRoot
-      .querySelector('.delete')
-      .removeEventListener('click', () => this._delete())
-    this._shadowRoot
-      .querySelector('.open')
-      .removeEventListener('click', () => this._toggleModal())
-    this._shadowRoot
-      .querySelector('.favorite')
-      .removeEventListener('click', () => this._toggleFavorite())
-  }
   _render (title) {
     this._shadowRoot.querySelector('.recipe-title').innerHTML = title
     this._shadowRoot.querySelector('.favorite').innerHTML = this._recipe
