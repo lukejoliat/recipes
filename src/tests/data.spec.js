@@ -1,7 +1,8 @@
 /* eslint-disable no-undef */
+// TODO: get this working
 import RecipeModel from '../models/Recipe'
 let DATA_SERVICE
-process.env === 'local'
+process.env === 'development'
   ? import(`../utils/data-dev`).then(r => (DATA_SERVICE = r))
   : import(`../utils/data`).then(r => (DATA_SERVICE = r))
 

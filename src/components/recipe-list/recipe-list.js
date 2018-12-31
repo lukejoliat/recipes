@@ -1,56 +1,66 @@
-import { debounce } from '../../utils/utils'
-import template from './recipe-list.html'
 /* global HTMLElement */
+import { debounce, filter } from '../../utils/utils'
+import template from './recipe-list.html'
+const DATA_SERVICE =
+  process.env.NODE_ENV === 'development'
+    ? require('../../utils/data-dev')
+    : require('../../utils/data')
 export default class RecipeList extends HTMLElement {
   constructor () {
     super()
     this._shadowRoot = this.attachShadow({ mode: 'open' })
     this._recipes = []
     this._isFavorites = false
-    this._filterValue = ``
     this.$recipeList = null
+    this.$recipes = null
     this.$filter = null
-    this.$all = null
     this.$favorites = null
+    this.$all = null
+    this.update = async () => {
+      this.recipes = await DATA_SERVICE.getRecipes()
+    }
   }
   connectedCallback () {
+    // initialize references
     this._shadowRoot.innerHTML = template
     this.$recipeList = this._shadowRoot.querySelector('.recipe-list')
     this.$filter = this._shadowRoot.querySelector('input')
     this.$favorites = this._shadowRoot.querySelector('.favorite-recipes')
     this.$all = this._shadowRoot.querySelector('.all-recipes')
+    // add listeners
     this.$filter.addEventListener('keyup', debounce(() => this._filter(), 150))
     this.$favorites.addEventListener('click', () => {
       this._isFavorites = true
       this.$favorites.classList.add('is-active')
       this.$all.classList.remove('is-active')
       this._favorites()
+      this.$filter.value = ``
     })
     this.$all.addEventListener('click', () => {
       this._isFavorites = false
       this.$all.classList.add('is-active')
       this.$favorites.classList.remove('is-active')
       this._render(this._recipes)
+      this.$filter.value = ``
     })
+    document.addEventListener('update-recipes', this.update)
+  }
+  disconnectedCallback () {
+    document.removeEventListener('update-recipes', this.update)
   }
   _render (recipes = []) {
+    // TODO: not very efficient, too many loops
     this.$recipeList.innerHTML = recipes.length
-      ? recipes.map(r => `<recipe-item></recipe-item>`).join('')
+      ? recipes
+        .map(r => `<recipe-item title="${r.title}"></recipe-item>`)
+        .join('')
       : `<a class="panel-block is-active"><span class="recipe-title">Sorry, no recipes could be found.</span>`
-    this._shadowRoot
-      .querySelectorAll('recipe-item')
-      .forEach((r, i) => (r.recipe = recipes[i]))
+    this.$recipes = this._shadowRoot.querySelectorAll('recipe-item')
+    this.$recipes.forEach((r, i) => (r.recipe = recipes[i]))
   }
   _filter () {
-    // TODO only rerender if results of filter are different
     const { value } = this.$filter
-    if (value === this._filterValue) return
-    this._filterValue = value
-    this._isFavorites
-      ? this._render(
-        this._recipes.filter(r => r.title.startsWith(value) && r.favorite)
-      )
-      : this._render(this._recipes.filter(r => r.title.startsWith(value)))
+    filter(this.$recipes, value)
   }
   _favorites () {
     this._render(this._recipes.filter(r => r.favorite))

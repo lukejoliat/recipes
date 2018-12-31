@@ -1,57 +1,59 @@
 /* eslint-disable no-undef */
-const getRecipe = id => new Promise((resolve, reject) => getRecipes().find(id))
+// Initialize Firebase
+var config = {
+  apiKey: 'AIzaSyCrLALh35T6Rb-0t4OQ_aqLRh7W8IhJMNc',
+  authDomain: 'recipes-226405.firebaseapp.com',
+  databaseURL: 'https://recipes-226405.firebaseio.com',
+  projectId: 'recipes-226405',
+  storageBucket: 'recipes-226405.appspot.com',
+  messagingSenderId: '1072381355302'
+}
+firebase.initializeApp(config)
+const db = firebase.firestore()
+
+const getRecipe = id => db.collection('recipes').where('id', '==', id)
 
 const deleteRecipe = id =>
-  new Promise(async (resolve, reject) => {
-    const recipes = await getRecipes()
-    const filteredRecipes = recipes.filter(r => r.id !== id)
-    localStorage.setItem('recipes', JSON.stringify(filteredRecipes))
-    resolve()
-  })
+  db
+    .collection('recipes')
+    .doc(id)
+    .delete()
 
 const editRecipe = recipe =>
-  new Promise(async (resolve, reject) => {
-    const recipes = await getRecipes()
-    recipes.forEach((r, i) => {
-      if (r.id === recipe.id) {
-        recipes[i] = recipe
-      }
-    })
-    localStorage.setItem('recipes', JSON.stringify(recipes))
-    resolve()
-  })
+  db
+    .collection('recipes')
+    .doc(recipe.id)
+    .update(recipe)
 
 const createRecipe = (recipes = [], recipe) =>
-  new Promise((resolve, reject) => {
-    const items = JSON.stringify(recipes.concat(recipe))
-    localStorage.setItem('recipes', items)
-    resolve()
-  })
+  db
+    .collection('recipes')
+    .doc()
+    .set(recipe)
 
-const favoriteRecipe = id =>
-  new Promise(async (resolve, reject) => {
-    const recipes = await getRecipes()
-    recipes.map(r => {
-      if (r.id === id) r.favorite = true
-    })
-    localStorage.setItem('recipes', JSON.stringify(recipes))
-    resolve()
-  })
+const favoriteRecipe = async id => {
+  const recipes = await getRecipes()
+  const recipe = recipes.find(r => r.id === id)
+  recipe.favorite = true
+  db.collection('recipes')
+    .doc(recipe.id)
+    .update(recipe)
+}
 
-const unFavoriteRecipe = id =>
-  new Promise(async (resolve, reject) => {
-    const recipes = await getRecipes()
-    recipes.map(r => {
-      if (r.id === id) r.favorite = false
-    })
-    localStorage.setItem('recipes', JSON.stringify(recipes))
-    resolve()
-  })
+const unFavoriteRecipe = async id => {
+  const recipes = await getRecipes()
+  const recipe = recipes.find(r => r.id === id)
+  recipe.favorite = false
+  db.collection('recipes')
+    .doc(recipe.id)
+    .update(recipe)
+}
 
 const getRecipes = () =>
-  new Promise((resolve, reject) =>
-    resolve(JSON.parse(localStorage.getItem('recipes')) || [])
-  )
+  db
+    .collection('recipes')
+    .get()
+    .then(snapshot => snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
 
 export {
   deleteRecipe,

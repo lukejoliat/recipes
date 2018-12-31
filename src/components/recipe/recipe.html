@@ -5,29 +5,26 @@
   .panel-block {
     align-items: center;
   }
+  .panel-block > * {
+    margin: 0 0.25rem;
+  }
   .recipe-title {
     flex: 1;
   }
 </style>
-<a class="panel-block is-active">
+<div class="panel-block is-active">
   <span class="recipe-title"></span>
-  <span
-    class="has-text-info modal-button open"
+  <a
+    class="modal-button button is-link open"
     data-target="modal"
     aria-haspopup="true"
-    >Expand</span
+    >Expand</a
   >
-  <span
-    class="has-text-info modal-button"
+  <a
+    class="favorite button is-link"
     data-target="modal"
     aria-haspopup="true"
-    >|</span
-  >
-  <span
-    class="has-text-info modal-button favorite"
-    data-target="modal"
-    aria-haspopup="true"
-  ></span>
-  <span class="panel-icon"><button class="delete"></button></span>
-</a>
+  ></a>
+  <button class="delete"></button>
+</div>
 <recipe-modal></recipe-modal>

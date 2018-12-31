@@ -1,5 +1,10 @@
 /* global HTMLElement */
 import template from './modal.html'
+import { parse } from '../../utils/utils'
+const DATA_SERVICE =
+  process.env.NODE_ENV === 'development'
+    ? require('../../utils/data-dev')
+    : require('../../utils/data')
 export default class Modal extends HTMLElement {
   constructor () {
     super()
@@ -7,39 +12,43 @@ export default class Modal extends HTMLElement {
     this._open = false
     this._recipe = null
     this._editing = false
+    this.$fileInput = null
+    this._file = null
   }
   connectedCallback () {
     this._shadowRoot.innerHTML = template
+    this.$fileInput = this._shadowRoot.querySelector('input[type=file]')
     this._shadowRoot
-      .querySelectorAll('.close')
+      .querySelectorAll('.modal-close')
       .forEach(i => i.addEventListener('click', () => this._closeModal()))
     this._shadowRoot
       .querySelector('.action')
       .addEventListener('click', () => this._toggleEditing())
+    this.$fileInput.addEventListener('change', async () => {
+      this._file = await parse(this.$fileInput.files[0])
+      this._shadowRoot.querySelector('img').src = this._file
+    })
   }
-  detachedCallback () {
-    this._shadowRoot
-      .querySelectorAll('.close')
-      .forEach(i => i.removeEventListener('click', () => this._closeModal()))
-    this._shadowRoot
-      .querySelector('.action')
-      .removeEventListener('click', () => this._toggleEditing())
-  }
-  _render ({ id, title, ingredients, favorite }) {
+  _render ({ id, title, ingredients, favorite, image }) {
     if (this._editing) {
       this._shadowRoot.querySelector(
-        '.modal-card-body h2'
+        '.recipe-title'
       ).innerHTML = `<input class="input title" type="text" required  value="${title}"/>`
       this._shadowRoot.querySelector(
-        '.modal-card-body p'
+        '.recipe-body'
       ).innerHTML = `<textarea class="textarea ingredients" required>${ingredients}</textarea>`
       this._shadowRoot.querySelector('.action').innerHTML = 'Save'
+      this._shadowRoot
+        .querySelector('.recipe-image-field')
+        .classList.remove('hidden')
     } else {
-      this._shadowRoot.querySelector('.modal-card-body h2').innerHTML = title
-      this._shadowRoot.querySelector(
-        '.modal-card-body p'
-      ).innerHTML = ingredients
-      this._shadowRoot.querySelector('.action').innerHTML = 'Edit'
+      this._shadowRoot.querySelector('.recipe-title').innerHTML = title
+      this._shadowRoot.querySelector('.recipe-body').innerHTML = ingredients
+      if (image) {
+        this._shadowRoot.querySelector(
+          '.recipe-image'
+        ).innerHTML = `<img src="${image}">`
+      }
     }
   }
   _openModal () {
@@ -50,18 +59,23 @@ export default class Modal extends HTMLElement {
     this._open = false
     this._shadowRoot.querySelector('.modal').classList.remove('is-active')
   }
-  _toggleEditing () {
+  async _toggleEditing () {
     if (this._editing && this._recipe) {
       this._recipe.title = this._shadowRoot.querySelector('.title').value
       this._recipe.ingredients = this._shadowRoot.querySelector(
         '.ingredients'
       ).value
-      document.dispatchEvent(
-        new window.CustomEvent('edit', {
-          bubbles: true,
-          detail: this._recipe
-        })
-      )
+      if (this._file) this._recipe.image = this._file
+      try {
+        await DATA_SERVICE.editRecipe(this._recipe)
+        document.dispatchEvent(
+          new window.CustomEvent('update-recipes', {
+            bubbles: true
+          })
+        )
+      } catch (e) {
+        window.alert(e)
+      }
     }
     this._editing = !this._editing
     this._render(this._recipe)

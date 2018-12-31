@@ -24,12 +24,18 @@ const editRecipe = recipe =>
     resolve()
   })
 
-const createRecipe = (recipes = [], recipe) =>
-  new Promise((resolve, reject) => {
-    const items = JSON.stringify(recipes.concat(recipe))
+const createRecipe = (recipes = [], recipe) => {
+  const id =
+    '_' +
+    Math.random()
+      .toString(36)
+      .substr(2, 9)
+  return new Promise((resolve, reject) => {
+    const items = JSON.stringify(recipes.concat({ id, ...recipe }))
     localStorage.setItem('recipes', items)
     resolve()
   })
+}
 
 const favoriteRecipe = id =>
   new Promise(async (resolve, reject) => {

@@ -1,4 +1,4 @@
-const debounce = function (func, wait, immediate) {
+const debounce = (func, wait, immediate) => {
   let timeout
 
   return function executedFunction () {
@@ -19,4 +19,35 @@ const debounce = function (func, wait, immediate) {
     if (callNow) func.apply(context, args)
   }
 }
-export { debounce }
+
+const filter = (array = [], value) => {
+  // TODO: this is pretty ugly
+  Array.from(array).map(item => {
+    if (item.classList) {
+      if (!value) item.classList.remove('hidden')
+      else {
+        item.title.startsWith(value)
+          ? item.classList.remove('hidden')
+          : item.classList.add('hidden')
+      }
+    }
+  })
+}
+
+const parse = file => {
+  return new Promise((resolve, reject) => {
+    const reader = new window.FileReader()
+    // Wait till complete
+    reader.onload = function () {
+      resolve(reader.result)
+    }
+    // Make sure to handle error states
+    reader.onerror = function (e) {
+      reject(e)
+    }
+    reader.readAsDataURL(file)
+  })
+}
+
+const validateFile = file => {}
+export { debounce, filter, parse, validateFile }

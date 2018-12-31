@@ -1,18 +1,19 @@
 import 'babel-polyfill'
 import Router from 'vanilla-router'
-let DATA_SERVICE
-process.env.NODE_ENV === 'development'
-  ? import(`./utils/data-dev`).then(r => (DATA_SERVICE = r))
-  : import(`./utils/data`).then(r => (DATA_SERVICE = r))
+// TODO: figure this mess out
+const DATA_SERVICE =
+  process.env.NODE_ENV === 'development'
+    ? require('./utils/data-dev')
+    : require('./utils/data')
+// import DATA_SERVICE from './utils/data-dev'
 const $el = document.getElementById('app')
 
 // Router Declaration
 const router = new Router({
   mode: 'history',
   page404: async path => {
-    const errorTemplate = await import('./components/error')
+    const errorTemplate = await import('./components/error/error')
     const html = errorTemplate.default(
-      'yellow',
       'Error 404 - Page NOT Found!',
       `The path '/${path}' does not exist on this site`
     )
@@ -22,10 +23,6 @@ const router = new Router({
 
 // Routes
 window.addEventListener('load', () => {
-  DATA_SERVICE.getTableResults()
-    .then(r => r.json())
-    .then(({ rows }) => console.log(rows))
-
   router.add('/', async () => {
     await import('./components/recipe/recipe')
     await import('./components/recipe-list/recipe-list')

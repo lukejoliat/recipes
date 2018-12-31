@@ -1,5 +1,9 @@
 /* global HTMLElement */
 import template from './recipe.html'
+const DATA_SERVICE =
+  process.env.NODE_ENV === 'development'
+    ? require('../../utils/data-dev')
+    : require('../../utils/data')
 export default class Recipe extends HTMLElement {
   constructor () {
     super()
@@ -30,23 +34,33 @@ export default class Recipe extends HTMLElement {
     this._modal.open = !this._modal.open
     this._modal.recipe = this._recipe
   }
-  _delete () {
+  async _delete () {
     if (!this._recipe) return
-    document.dispatchEvent(
-      new window.CustomEvent('delete', {
-        bubbles: false,
-        detail: this._recipe.id
-      })
-    )
+    try {
+      await DATA_SERVICE.deleteRecipe(this._recipe.id)
+      document.dispatchEvent(
+        new window.CustomEvent('update-recipes', {
+          bubbles: false
+        })
+      )
+    } catch (e) {
+      window.alert(e)
+    }
   }
-  _toggleFavorite () {
+  async _toggleFavorite () {
     if (!this._recipe) return
-    document.dispatchEvent(
-      new window.CustomEvent('togglefavorite', {
-        bubbles: false,
-        detail: { id: this._recipe.id, favorite: this._recipe.favorite }
-      })
-    )
+    try {
+      this._recipe.favorite
+        ? await DATA_SERVICE.favoriteRecipe(this._recipe.id)
+        : await DATA_SERVICE.unFavoriteRecipe(this._recipe.id)
+      document.dispatchEvent(
+        new window.CustomEvent('update-recipes', {
+          bubbles: false
+        })
+      )
+    } catch (e) {
+      window.alert(e)
+    }
   }
   get recipe () {
     return this._recipe
