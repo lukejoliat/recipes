@@ -1,5 +1,4 @@
 /* eslint-disable no-undef */
-// TODO: get this working
 import RecipeModel from '../models/Recipe'
 let DATA_SERVICE
 process.env === 'development'

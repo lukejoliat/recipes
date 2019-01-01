@@ -53,7 +53,6 @@ export default class Recipe extends HTMLElement {
     }
   }
   async _toggleFavorite () {
-    if (!this._recipe) return
     try {
       this._recipe.favorite
         ? await DATA_SERVICE.unFavoriteRecipe(this._recipe.id)

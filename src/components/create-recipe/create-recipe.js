@@ -11,8 +11,8 @@ export default class CreateRecipe extends HTMLElement {
     this._shadowRoot = this.attachShadow({
       mode: 'open'
     })
-    this.$fileInput = null
     this._file = null
+    this.$fileInput = null
   }
   connectedCallback () {
     this._shadowRoot.innerHTML = template

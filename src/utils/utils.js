@@ -21,7 +21,6 @@ const debounce = (func, wait, immediate) => {
 }
 
 const filter = (array = [], value) => {
-  // TODO: this is pretty ugly
   Array.from(array).map(item => {
     if (item.classList) {
       if (!value) item.classList.remove('hidden')
