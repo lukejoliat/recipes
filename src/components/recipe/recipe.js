@@ -1,5 +1,6 @@
 /* global HTMLElement */
 import template from './recipe.html'
+import { showError } from '../../utils/utils'
 const DATA_SERVICE =
   process.env.NODE_ENV === 'development'
     ? require('../../utils/data-dev')
@@ -44,22 +45,30 @@ export default class Recipe extends HTMLElement {
         })
       )
     } catch (e) {
-      window.alert(e)
+      console.error(e)
+      showError(
+        'Sorry,',
+        'There was a problem deleting the recipe. Please, try again.'
+      )
     }
   }
   async _toggleFavorite () {
     if (!this._recipe) return
     try {
       this._recipe.favorite
-        ? await DATA_SERVICE.favoriteRecipe(this._recipe.id)
-        : await DATA_SERVICE.unFavoriteRecipe(this._recipe.id)
+        ? await DATA_SERVICE.unFavoriteRecipe(this._recipe.id)
+        : await DATA_SERVICE.favoriteRecipe(this._recipe.id)
       document.dispatchEvent(
         new window.CustomEvent('update-recipes', {
           bubbles: false
         })
       )
     } catch (e) {
-      window.alert(e)
+      console.error(e)
+      showError(
+        'Sorry,',
+        'There was a problem completing your request. Please, try again.'
+      )
     }
   }
   get recipe () {

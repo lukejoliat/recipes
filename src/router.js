@@ -1,11 +1,11 @@
 import 'babel-polyfill'
 import Router from 'vanilla-router'
+import './components/error/error'
 // TODO: figure this mess out
 const DATA_SERVICE =
   process.env.NODE_ENV === 'development'
     ? require('./utils/data-dev')
     : require('./utils/data')
-// import DATA_SERVICE from './utils/data-dev'
 const $el = document.getElementById('app')
 
 // Router Declaration

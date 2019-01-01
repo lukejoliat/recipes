@@ -8,7 +8,7 @@ export default class RecipeModel {
 }
 
 const isValidRecipe = (recipe = {}) => {
-  if (recipe.title && recipe.ingredients) return true
+  if (recipe.id && recipe.title && recipe.ingredients) return true
 }
 
 export { isValidRecipe }

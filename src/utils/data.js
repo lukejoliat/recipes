@@ -9,6 +9,7 @@ var config = {
   messagingSenderId: '1072381355302'
 }
 firebase.initializeApp(config)
+const storageRef = firebase.storage().ref()
 const db = firebase.firestore()
 
 const getRecipe = id => db.collection('recipes').where('id', '==', id)
@@ -19,17 +20,31 @@ const deleteRecipe = id =>
     .doc(id)
     .delete()
 
-const editRecipe = recipe =>
-  db
-    .collection('recipes')
+const editRecipe = async recipe => {
+  if (recipe.image && recipe.image.name) {
+    const imagesRef = storageRef.child(`images/${recipe.image.title}`)
+    const upload = await imagesRef.put(recipe.image)
+    const url = await upload.ref.getDownloadURL()
+    recipe.image = url
+  }
+  db.collection('recipes')
     .doc(recipe.id)
     .update(recipe)
+}
 
-const createRecipe = (recipes = [], recipe) =>
-  db
-    .collection('recipes')
+const createRecipe = async (recipes = [], recipe) => {
+  if (recipe.image && recipe.image.name) {
+    const imagesRef = storageRef.child(`images/${recipe.image.title}`)
+    const upload = await imagesRef.put(recipe.image)
+    const url = await upload.ref.getDownloadURL()
+    recipe.image = url
+  } else {
+    recipe.image = ``
+  }
+  db.collection('recipes')
     .doc()
     .set(recipe)
+}
 
 const favoriteRecipe = async id => {
   const recipes = await getRecipes()

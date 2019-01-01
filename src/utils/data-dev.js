@@ -1,3 +1,5 @@
+import { parse } from './utils'
+
 /* eslint-disable no-undef */
 // the localstorage implementation for local development
 const getRecipe = id => new Promise((resolve, reject) => getRecipes().find(id))
@@ -14,6 +16,9 @@ const deleteRecipe = id =>
 
 const editRecipe = recipe =>
   new Promise(async (resolve, reject) => {
+    if (recipe.image && recipe.image.name) {
+      recipe.image = await parse(recipe.image)
+    }
     const recipes = await getRecipes()
     recipes.forEach((r, i) => {
       if (r.id === recipe.id) {
@@ -24,16 +29,17 @@ const editRecipe = recipe =>
     resolve()
   })
 
-const createRecipe = (recipes = [], recipe) => {
+const createRecipe = async (recipes = [], recipe) => {
   const id =
     '_' +
     Math.random()
       .toString(36)
       .substr(2, 9)
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
+    if (recipe.image && recipe.image.name) await parse(recipe.image)
     const items = JSON.stringify(recipes.concat({ id, ...recipe }))
     localStorage.setItem('recipes', items)
-    resolve()
+    resolve(items)
   })
 }
 

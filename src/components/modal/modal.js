@@ -12,8 +12,10 @@ export default class Modal extends HTMLElement {
     this._open = false
     this._recipe = null
     this._editing = false
-    this.$fileInput = null
     this._file = null
+    this.$fileInput = null
+    this.$recipeTitle = null
+    this.$recipeIngredients = null
   }
   connectedCallback () {
     this._shadowRoot.innerHTML = template
@@ -65,7 +67,7 @@ export default class Modal extends HTMLElement {
       this._recipe.ingredients = this._shadowRoot.querySelector(
         '.ingredients'
       ).value
-      if (this._file) this._recipe.image = this._file
+      if (this._file) this._recipe.image = this.$fileInput.files[0]
       try {
         await DATA_SERVICE.editRecipe(this._recipe)
         document.dispatchEvent(
@@ -74,11 +76,16 @@ export default class Modal extends HTMLElement {
           })
         )
       } catch (e) {
-        window.alert(e)
+        this._setError(e)
+        console.error(e)
       }
     }
     this._editing = !this._editing
     this._render(this._recipe)
+  }
+  _setError (e) {
+    // const error = document.createElement(error('', e))
+    // this._shadowRoot.innerHTML = error
   }
   get open () {
     return this._open

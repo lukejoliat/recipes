@@ -1,7 +1,6 @@
 import { router } from '../../router'
-import { isValidRecipe } from '../../models/RecipeModel'
 import template from './create-recipe.html'
-import { parse, sanitize } from '../../utils/utils'
+import { parse, showError } from '../../utils/utils'
 const DATA_SERVICE =
   process.env.NODE_ENV === 'development'
     ? require('../../utils/data-dev')
@@ -24,28 +23,29 @@ export default class CreateRecipe extends HTMLElement {
     this._shadowRoot
       .querySelector('.cancel')
       .addEventListener('click', () => router.navigateTo('/'))
-    this.$fileInput.addEventListener('change', async () => {
-      this._file = await parse(this.$fileInput.files[0])
-      const image = new window.Image(100, 100)
-      image.src = this._file
-      this.$fileInput.after(image)
-    })
+    this.$fileInput.addEventListener('change', async () => this._previewImage())
   }
   async _create () {
-    const title = sanitize(this._shadowRoot.querySelector('input').value)
-    const ingredients = sanitize(
-      this._shadowRoot.querySelector('textarea').value
-    )
-    const recipe = { title, ingredients, image: this._file }
-    if (isValidRecipe(recipe)) {
-      // TODO: add service here? What good does the event do?
-      try {
-        await DATA_SERVICE.createRecipe(await DATA_SERVICE.getRecipes(), recipe)
-        router.navigateTo('/')
-      } catch (e) {
-        window.alert(e)
-      }
+    const title = this._shadowRoot.querySelector('input').value
+    const ingredients = this._shadowRoot.querySelector('textarea').value
+    const image = this.$fileInput.files[0] || null
+    const recipe = { title, ingredients, image }
+    try {
+      await DATA_SERVICE.createRecipe(await DATA_SERVICE.getRecipes(), recipe)
+      router.navigateTo('/')
+    } catch (e) {
+      console.error(e)
+      showError(
+        'Sorry',
+        'There was an error creating your recipe, please try again.'
+      )
     }
+  }
+  async _previewImage () {
+    this._file = await parse(this.$fileInput.files[0])
+    const image = new window.Image(100, 100)
+    image.src = this._file
+    this.$fileInput.after(image)
   }
 }
 

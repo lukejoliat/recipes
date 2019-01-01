@@ -49,5 +49,12 @@ const parse = file => {
   })
 }
 
+const showError = (title, message) => {
+  const errorComponent = document.querySelector('error-message')
+  errorComponent.setAttribute('title', title)
+  errorComponent.setAttribute('message', message)
+  setTimeout(() => errorComponent.classList.remove('hidden'), 500)
+}
+
 const validateFile = file => {}
-export { debounce, filter, parse, validateFile }
+export { debounce, filter, parse, validateFile, showError }
