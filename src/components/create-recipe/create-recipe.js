@@ -22,7 +22,7 @@ export default class CreateRecipe extends HTMLElement {
       .addEventListener('click', () => this._create())
     this._shadowRoot
       .querySelector('.cancel')
-      .addEventListener('click', () => router.navigateTo('/'))
+      .addEventListener('click', () => router.onNavItemClick('/'))
     this.$fileInput.addEventListener('change', async () => this._previewImage())
   }
   async _create () {
@@ -32,7 +32,7 @@ export default class CreateRecipe extends HTMLElement {
     const recipe = { title, ingredients, image }
     try {
       await DATA_SERVICE.createRecipe(await DATA_SERVICE.getRecipes(), recipe)
-      router.navigateTo('/')
+      router.onNavItemClick('/')
     } catch (e) {
       console.error(e)
       showError(

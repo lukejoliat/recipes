@@ -1,7 +1,6 @@
 /* global HTMLElement */
 import { debounce, filter } from '../../utils/utils'
 import template from './recipe-list.html'
-import { isValidRecipe } from '../../models/RecipeModel'
 const DATA_SERVICE =
   process.env.NODE_ENV === 'development'
     ? require('../../utils/data-dev')
@@ -51,11 +50,7 @@ export default class RecipeList extends HTMLElement {
     // TODO: not very efficient, too many loops
     this.$recipeList.innerHTML = recipes.length
       ? recipes
-        .map(r => {
-          if (isValidRecipe(r)) {
-            return `<recipe-item title="${r.title}"></recipe-item>`
-          }
-        })
+        .map(r => `<recipe-item title="${r.title}"></recipe-item>`)
         .join('')
       : `<a class="panel-block is-active"><span class="recipe-title">Sorry, no recipes could be found.</span>`
     this.$recipes = this._shadowRoot.querySelectorAll('recipe-item')

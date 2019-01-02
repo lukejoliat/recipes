@@ -1,5 +1,4 @@
 import 'babel-polyfill'
-import Router from 'vanilla-router'
 import './components/error/error'
 const DATA_SERVICE =
   process.env.NODE_ENV === 'development'
@@ -7,32 +6,39 @@ const DATA_SERVICE =
     : require('./utils/data')
 const $el = document.getElementById('app')
 
-// Router Declaration
-const router = new Router({
-  mode: 'history',
-  page404: async path => {
-    const errorTemplate = await import('./components/error/error')
-    const html = errorTemplate.default(
-      'Error 404 - Page NOT Found!',
-      `The path '/${path}' does not exist on this site`
-    )
-    $el.innerHTML = html
-  }
-})
+const home = async () => {
+  await import('./components/recipe/recipe')
+  await import('./components/recipe-list/recipe-list')
+  await import('./components/modal/modal.js')
+  $el.innerHTML = `<recipe-list></recipe-list>`
+  $el.querySelector('recipe-list').recipes = await DATA_SERVICE.getRecipes()
+}
 
-// Routes
-window.addEventListener('load', () => {
-  router.add('/', async () => {
-    await import('./components/recipe/recipe')
-    await import('./components/recipe-list/recipe-list')
-    await import('./components/modal/modal.js')
-    $el.innerHTML = `<recipe-list></recipe-list>`
-    $el.querySelector('recipe-list').recipes = await DATA_SERVICE.getRecipes()
-  })
-  router.add('/create', async () => {
-    await import('./components/create-recipe/create-recipe')
-    $el.innerHTML = `<create-recipe></create-recipe>`
-  })
-})
+const create = async () => {
+  await import('./components/create-recipe/create-recipe')
+  $el.innerHTML = `<create-recipe></create-recipe>`
+}
 
+const routes = {
+  '/': home,
+  '/create': create
+}
+
+window.onpopstate = async () => {
+  await routes[window.location.pathname]()
+}
+
+let onNavItemClick = async pathName => {
+  window.history.pushState({}, pathName, window.location.origin + pathName)
+  await routes[pathName]()
+}
+
+;(async () => {
+  await routes[window.location.pathname]()
+})()
+
+const router = {
+  onNavItemClick,
+  routes
+}
 export { router }
