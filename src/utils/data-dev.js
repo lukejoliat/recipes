@@ -2,7 +2,13 @@ import { parse } from './utils'
 
 /* eslint-disable no-undef */
 // the localstorage implementation for local development
-const getRecipe = id => new Promise((resolve, reject) => getRecipes().find(id))
+const getRecipe = id => {
+  return new Promise(async (resolve, reject) => {
+    const recipes = await getRecipes()
+    const recipe = recipes.find(r => r.id === id)
+    resolve(recipe)
+  })
+}
 
 const getTableResults = () => fetch(`${process.env.API_URL}/postgres-demo`)
 

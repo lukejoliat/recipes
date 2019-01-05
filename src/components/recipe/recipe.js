@@ -1,6 +1,7 @@
 /* global HTMLElement */
 import template from './recipe.html'
 import { showError } from '../../utils/utils'
+import { router } from '../../router'
 const DATA_SERVICE =
   process.env.NODE_ENV === 'development'
     ? require('../../utils/data-dev')
@@ -13,27 +14,28 @@ export default class Recipe extends HTMLElement {
   }
   connectedCallback () {
     this._shadowRoot.innerHTML = template
-    this._modal = this._shadowRoot.querySelector('recipe-modal')
     this._shadowRoot
-      .querySelector('.delete')
+      .querySelector('.delete-recipe')
       .addEventListener('click', () => this._delete())
     this._shadowRoot
-      .querySelector('.open')
-      .addEventListener('click', () => this._toggleModal())
+      .querySelector('.edit-recipe')
+      .addEventListener('click', () =>
+        router.onNavItemClick(`/edit?id=${this._recipe.id}`)
+      )
     this._shadowRoot
-      .querySelector('.favorite')
+      .querySelector('.favorite-recipe')
       .addEventListener('click', () => this._toggleFavorite())
   }
-  _render (title) {
+  _render (title, ingredients, image) {
     this._shadowRoot.querySelector('.recipe-title').innerHTML = title
-    this._shadowRoot.querySelector('.favorite').innerHTML = this._recipe
+    this._shadowRoot.querySelector(
+      '.recipe-ingredients'
+    ).innerHTML = ingredients
+    if (image) this._shadowRoot.querySelector('.recipe-image').src = image
+    this._shadowRoot.querySelector('.favorite-recipe').innerHTML = this._recipe
       .favorite
       ? 'Unfavorite'
       : 'Favorite'
-  }
-  _toggleModal () {
-    this._modal.open = !this._modal.open
-    this._modal.recipe = this._recipe
   }
   async _delete () {
     if (!this._recipe) return
@@ -75,7 +77,11 @@ export default class Recipe extends HTMLElement {
   }
   set recipe (recipe = {}) {
     this._recipe = recipe
-    this._render(this._recipe.title)
+    this._render(
+      this._recipe.title,
+      this._recipe.ingredients,
+      this._recipe.image
+    )
   }
 }
 

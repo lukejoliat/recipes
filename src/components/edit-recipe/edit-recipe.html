@@ -4,17 +4,15 @@
 <form>
   <div class="field">
     <label class="label">Name *</label>
-    <input class="input" type="text" required />
+    <input class="input recipe-title" type="text" required />
   </div>
   <div class="field"><file-uploader></file-uploader></div>
   <div class="field">
     <label class="label">Ingredients *</label>
-    <textarea class="textarea" required></textarea>
+    <textarea class="textarea recipe-ingredients" required></textarea>
   </div>
   <div class="field is-grouped">
-    <div class="control">
-      <button class="button is-link create">Submit</button>
-    </div>
+    <div class="control"><button class="button is-link edit">Save</button></div>
     <div class="control">
       <button class="button is-text cancel">Cancel</button>
     </div>

@@ -1,6 +1,6 @@
 /* global HTMLElement */
 import template from './modal.html'
-import { parse, showError } from '../../utils/utils'
+import { showError } from '../../utils/utils'
 import { isValidRecipe } from '../../models/RecipeModel'
 const DATA_SERVICE =
   process.env.NODE_ENV === 'development'
@@ -14,40 +14,48 @@ export default class Modal extends HTMLElement {
     this._recipe = null
     this._editing = false
     this._file = null
-    this.$fileInput = null
+    this.$fileUploader = null
     this.$recipeTitle = null
     this.$recipeIngredients = null
   }
   connectedCallback () {
     this._shadowRoot.innerHTML = template
-    this.$fileInput = this._shadowRoot.querySelector('input[type=file]')
     this._shadowRoot
       .querySelectorAll('.modal-close')
       .forEach(i => i.addEventListener('click', () => this._closeModal()))
     this._shadowRoot
-      .querySelector('.action')
-      .addEventListener('click', () => this._toggleEditing())
-    this.$fileInput.addEventListener('change', async () => this._previewImage())
+      .querySelector('.edit')
+      .addEventListener('click', e => this._edit(e))
   }
   _render ({ id, title, ingredients, favorite, image }) {
     if (this._editing) {
-      this._shadowRoot.querySelector(
-        '.recipe-title'
-      ).innerHTML = `<input class="input title" type="text" required  value="${title}"/>`
-      this._shadowRoot.querySelector(
-        '.recipe-body'
-      ).innerHTML = `<textarea class="textarea ingredients" required>${ingredients}</textarea>`
-      this._shadowRoot.querySelector('.action').innerHTML = 'Save'
+      const form = `
+      <form>
+        <div class="field">
+          <label class="label">Name *</label>
+          <input class="input recipe-title" type="text" value="${title}" required />
+        </div>
+        <div class="field"><file-uploader></file-uploader></div>
+        <div class="field">
+          <label class="label recipe-ingredients">Ingredients *</label>
+          <textarea class="textarea" required>${ingredients}</textarea>
+        </div>
+        <div class="field is-grouped">
+          <div class="control">
+            <button class="button is-link create save" type="submit">Submit</button>
+          </div>
+        </div>
+      </form>`
+      this._shadowRoot.querySelector('.content').innerHTML = form
       this._shadowRoot
-        .querySelector('.recipe-image-field')
-        .classList.remove('hidden')
+        .querySelector('.save')
+        .addEventListener('click', e => this._save(e))
+      this.$fileUploader = this._shadowRoot.querySelector('file-uploader')
     } else {
       this._shadowRoot.querySelector('.recipe-title').innerHTML = title
-      this._shadowRoot.querySelector('.recipe-body').innerHTML = ingredients
-      this._shadowRoot.querySelector('.action').innerHTML = 'Edit'
-      this._shadowRoot
-        .querySelector('.recipe-image-field')
-        .classList.add('hidden')
+      this._shadowRoot.querySelector(
+        '.recipe-ingredients'
+      ).innerHTML = ingredients
       if (image) {
         this._shadowRoot.querySelector(
           '.recipe-image'
@@ -65,19 +73,21 @@ export default class Modal extends HTMLElement {
     this._open = false
     this._shadowRoot.querySelector('.modal').classList.remove('is-active')
   }
-  async _toggleEditing () {
-    if (this._editing && this._recipe) {
-      this._recipe.title = this._shadowRoot.querySelector('.title').value
-      this._recipe.ingredients = this._shadowRoot.querySelector(
-        '.ingredients'
-      ).value
-      if (this._file && this.$fileInput.files[0]) {
-        this._recipe.image = this.$fileInput.files[0]
-      }
+  async _edit (e) {
+    this._editing = true
+    this._render(this._recipe)
+  }
+  async _save (e) {
+    this._recipe.title =
+      this._shadowRoot.querySelector('.recipe-title').value || null
+    this._recipe.ingredients =
+      this._shadowRoot.querySelector('.recipe-ingredients').value || null
+    if (this.$fileUploader.file) {
+      this._recipe.image = this.$fileUploader.file
+    }
+    if (isValidRecipe(this._recipe)) {
+      e.preventDefault()
       try {
-        if (!isValidRecipe(this._recipe)) {
-          throw new Error('Not a valid recipe')
-        }
         await DATA_SERVICE.editRecipe(this._recipe)
         document.dispatchEvent(
           new window.CustomEvent('update-recipes', {
@@ -89,19 +99,7 @@ export default class Modal extends HTMLElement {
         console.error(e)
         this._closeModal()
       }
-    }
-    this._editing = !this._editing
-    this._render(this._recipe)
-  }
-  async _previewImage () {
-    const image = this.$fileInput.files[0]
-    try {
-      this._file = await parse(image)
-      this._shadowRoot.querySelector('img').src = this._file
-    } catch (error) {
-      console.error(error)
-      showError('Sorry', 'There was an error processing the image.')
-      this._closeModal()
+      this._editing = false
     }
   }
   get open () {

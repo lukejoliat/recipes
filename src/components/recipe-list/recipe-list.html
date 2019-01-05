@@ -1,11 +1,11 @@
 <link rel="stylesheet" href="../../css/style.css" />
 <style>
   .hidden {
-    display: none;
+    display: none !important;
   }
 </style>
 <div data-role="container">
-  <p class="panel-heading">Recipes</p>
+  <!-- <p class="panel-heading">Recipes</p>
   <div class="panel-block">
     <p class="control">
       <input class="input is-small" type="text" placeholder="search" />
@@ -14,6 +14,13 @@
   <p class="panel-tabs">
     <a class="all-recipes is-active">all</a
     ><a class="favorite-recipes">favorites</a>
-  </p>
-  <div class="recipe-list"></div>
+  </p> -->
+  <input class="input is-rounded" type="text" placeholder="search" />
+  <div class="field is-grouped is-grouped-centered">
+    <p class="control"><a class="all-recipes button is-primary"> All </a></p>
+    <p class="control">
+      <a class="favorite-recipes button is-light"> Favorites </a>
+    </p>
+  </div>
+  <div class="recipe-list tile is-ancestor"></div>
 </div>

@@ -50,7 +50,12 @@ export default class RecipeList extends HTMLElement {
     // TODO: not very efficient, too many loops
     this.$recipeList.innerHTML = recipes.length
       ? recipes
-        .map(r => `<recipe-item title="${r.title}"></recipe-item>`)
+        .map(
+          r =>
+            `<recipe-item class="tile is-parent is-4" title="${
+              r.title
+            }"></recipe-item>`
+        )
         .join('')
       : `<a class="panel-block is-active"><span class="recipe-title">Sorry, no recipes could be found.</span>`
     this.$recipes = this._shadowRoot.querySelectorAll('recipe-item')
