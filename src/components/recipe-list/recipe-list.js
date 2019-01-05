@@ -29,15 +29,15 @@ export default class RecipeList extends HTMLElement {
     this.$filter.addEventListener('keyup', debounce(() => this._filter(), 150))
     this.$favorites.addEventListener('click', () => {
       this._isFavorites = true
-      this.$favorites.classList.add('is-active')
-      this.$all.classList.remove('is-active')
+      this.$favorites.classList.add('is-primary')
+      this.$all.classList.remove('is-primary')
       this._favorites()
       this.$filter.value = ``
     })
     this.$all.addEventListener('click', () => {
       this._isFavorites = false
-      this.$all.classList.add('is-active')
-      this.$favorites.classList.remove('is-active')
+      this.$all.classList.add('is-primary')
+      this.$favorites.classList.remove('is-primary')
       this._render(this._recipes)
       this.$filter.value = ``
     })
@@ -57,7 +57,7 @@ export default class RecipeList extends HTMLElement {
             }"></recipe-item>`
         )
         .join('')
-      : `<a class="panel-block is-active"><span class="recipe-title">Sorry, no recipes could be found.</span>`
+      : `<span class="recipe-title">Sorry, no recipes could be found.</span>`
     this.$recipes = this._shadowRoot.querySelectorAll('recipe-item')
     this.$recipes.forEach((r, i) => (r.recipe = recipes[i]))
   }

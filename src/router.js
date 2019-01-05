@@ -60,8 +60,11 @@ let onNavItemClick = async pathName => {
 }
 
 ;(async () => {
-  if (routes[window.location.pathname]) await routes[window.location.pathname]()
-  else routes['/error']()
+  const url = new URL(
+    window.location.pathname + window.location.search,
+    window.location.origin
+  )
+  if (routes[window.location.pathname]) { await routes[window.location.pathname](url.searchParams) } else routes['/error']()
 })()
 
 const router = {
