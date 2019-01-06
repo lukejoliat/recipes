@@ -12,14 +12,18 @@ firebase.initializeApp(config)
 const storageRef = firebase.storage().ref()
 const db = firebase.firestore()
 
-const getRecipe = id => db.collection('recipes').where('id', '==', id)
+const getRecipe = async id =>
+  db
+    .collection('recipes')
+    .doc(id)
+    .get()
+    .then(snapshot => ({ id: snapshot.id, ...snapshot.data() }))
 
-const deleteRecipe = async id => {
-  await db
+const deleteRecipe = async id =>
+  db
     .collection('recipes')
     .doc(id)
     .delete()
-}
 
 const editRecipe = async recipe => {
   if (recipe.image && recipe.image.name) {
@@ -28,7 +32,7 @@ const editRecipe = async recipe => {
     const url = await upload.ref.getDownloadURL()
     recipe.image = url
   }
-  await db
+  return db
     .collection('recipes')
     .doc(recipe.id)
     .update(recipe)
@@ -43,7 +47,7 @@ const createRecipe = async (recipes = [], recipe) => {
   } else {
     recipe.image = ``
   }
-  await db
+  return db
     .collection('recipes')
     .doc()
     .set(recipe)
@@ -53,7 +57,7 @@ const favoriteRecipe = async id => {
   const recipes = await getRecipes()
   const recipe = recipes.find(r => r.id === id)
   recipe.favorite = true
-  await db
+  return db
     .collection('recipes')
     .doc(recipe.id)
     .update(recipe)
@@ -63,7 +67,7 @@ const unFavoriteRecipe = async id => {
   const recipes = await getRecipes()
   const recipe = recipes.find(r => r.id === id)
   recipe.favorite = false
-  await db
+  return db
     .collection('recipes')
     .doc(recipe.id)
     .update(recipe)

@@ -1,35 +1,10 @@
-<head>
-  <link rel="stylesheet" href="../../css/style.css" />
-</head>
 <style>
-  .panel-block {
-    align-items: center;
-  }
-  .panel-block > * {
-    margin: 0 0.25rem;
-  }
-  .recipe-title {
-    flex: 1;
-  }
-  .card {
-    width: 100%;
+  .recipe {
+    display: none;
   }
 </style>
-<div class="panel-block is-active hidden">
-  <a
-    class="modal-button button is-link open"
-    data-target="modal"
-    aria-haspopup="true"
-    >Expand</a
-  >
-  <a
-    class="favorite button is-link"
-    data-target="modal"
-    aria-haspopup="true"
-  ></a>
-  <button class="delete"></button>
-</div>
-<div class="card">
+<link rel="stylesheet" href="./recipe.css" />
+<div class="card recipe">
   <div class="card-image">
     <figure class="image is-4by3">
       <img

@@ -43,8 +43,8 @@ const routes = {
 }
 
 window.onpopstate = async () => {
-  if (routes[window.location.pathname]) await routes[window.location.pathname]()
-  else routes['/error']()
+  // if (routes[window.location.pathname]) await routes[window.location.pathname]()
+  // else routes['/error']()
 }
 
 let onNavItemClick = async pathName => {
@@ -64,7 +64,9 @@ let onNavItemClick = async pathName => {
     window.location.pathname + window.location.search,
     window.location.origin
   )
-  if (routes[window.location.pathname]) { await routes[window.location.pathname](url.searchParams) } else routes['/error']()
+  if (routes[window.location.pathname]) {
+    await routes[window.location.pathname](url.searchParams)
+  } else routes['/error']()
 })()
 
 const router = {
