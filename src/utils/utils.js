@@ -35,6 +35,12 @@ const filter = (array = [], value) => {
 
 const parse = file => {
   return new Promise((resolve, reject) => {
+    if (!file.type.includes('image')) {
+      reject(new Error('file must be an image.'))
+    }
+    if (file.size > 10000000) {
+      reject(new Error('exceeds max upload size (10MB).'))
+    }
     const reader = new window.FileReader()
     // Wait till complete
     reader.onload = function () {

@@ -35,6 +35,7 @@ export default class FileUploader extends HTMLElement {
       )
     })
     this._dropArea.addEventListener('drop', e => this._handleDrop(e), false)
+    this._dropArea.addEventListener('change', e => this._handleSelect(e), false)
   }
   _unhighlight () {
     this._dropArea.classList.remove('highlight')
@@ -57,24 +58,30 @@ export default class FileUploader extends HTMLElement {
   }
   async _handleFile (file) {
     this._initializeProgress(1)
-    this._previewImage(file)
-    this.file = await parse(file)
-    this._progressDone()
+    try {
+      this.file = await parse(file)
+      this._previewImage(this.file)
+      this._progressDone()
+    } catch (e) {
+      console.error(e)
+      this._shadowRoot.getElementById(
+        'gallery'
+      ).innerHTML = `<span style="color: red;">Upload Failed: ${e}<span>`
+    }
   }
   _handleDrop (e) {
     let dt = e.dataTransfer
     let file = dt.files[0]
     this._handleFile(file)
   }
+  _handleSelect (e) {
+    const input = this._shadowRoot.querySelector('input[type=file]')
+    this._handleFile(input.files[0])
+  }
   _previewImage (file) {
-    let reader = new window.FileReader()
-    reader.readAsDataURL(file)
-    reader.onloadend = () => {
-      const src = reader.result
-      this._shadowRoot.getElementById(
-        'gallery'
-      ).innerHTML = `<img src="${src}" alt="recipe image">`
-    }
+    this._shadowRoot.getElementById(
+      'gallery'
+    ).innerHTML = `<img src="${file}" alt="recipe image">`
   }
   get file () {
     return this._file

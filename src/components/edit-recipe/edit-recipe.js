@@ -55,13 +55,20 @@ export default class EditRecipe extends HTMLElement {
   }
   set recipe (recipe) {
     this._recipe = recipe
+    if (!this._recipe) {
+      this._shadowRoot.innerHTML =
+        '<strong>Sorry, the recipe could not be found.</strong>'
+      return
+    }
     if (this.$title && this._recipe.title) {
       this.$title.value = this._recipe.title
     }
     if (this.$ingredients && this._recipe.ingredients) {
       this.$ingredients.value = this._recipe.ingredients
     }
-    if (this.$fileUploader && this._recipe.image) { this.$fileUploader.file = this._recipe.image }
+    if (this.$fileUploader && this._recipe.image) {
+      this.$fileUploader.file = this._recipe.image
+    }
   }
 }
 
