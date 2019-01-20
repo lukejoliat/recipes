@@ -1,10 +1,7 @@
 /* global HTMLElement */
-import { debounce, filter } from '../../utils/utils'
+import { debounce } from '../../utils/utils'
 import template from './recipe-list.html'
-const DATA_SERVICE =
-  process.env.NODE_ENV === 'development'
-    ? require('../../utils/data-dev')
-    : require('../../utils/data')
+import DATA_SERVICE from '../../utils/data'
 export default class RecipeList extends HTMLElement {
   constructor () {
     super()
@@ -16,9 +13,9 @@ export default class RecipeList extends HTMLElement {
     this.$filter = null
     this.$favorites = null
     this.$all = null
-    this.update = async () => (this.recipes = await DATA_SERVICE.getRecipes())
+    this.ds = new DATA_SERVICE()
   }
-  connectedCallback () {
+  async connectedCallback () {
     // initialize references
     this._shadowRoot.innerHTML = template
     this.$recipeList = this._shadowRoot.querySelector('.recipe-list')
@@ -27,51 +24,95 @@ export default class RecipeList extends HTMLElement {
     this.$all = this._shadowRoot.querySelector('.all-recipes')
     // add listeners
     this.$filter.addEventListener('keyup', debounce(() => this._filter(), 150))
-    this.$favorites.addEventListener('click', () => {
+    this.$favorites.addEventListener('click', async () => {
       this._isFavorites = true
       this.$favorites.classList.add('is-primary')
       this.$all.classList.remove('is-primary')
-      this._favorites()
+      this.ds.cursor = null
+      const recipes = await this.ds.getRecipes(
+        6,
+        this.$filter.value,
+        this._isFavorites
+      )
+      this._render(recipes, true)
       this.$filter.value = ``
     })
-    this.$all.addEventListener('click', () => {
+    this.$all.addEventListener('click', async () => {
       this._isFavorites = false
       this.$all.classList.add('is-primary')
       this.$favorites.classList.remove('is-primary')
-      this._render(this._recipes)
+      this.ds.cursor = null
+      const recipes = await this.ds.getRecipes(
+        6,
+        this.$filter.value,
+        this._isFavorites
+      )
+      this._render(recipes, true)
       this.$filter.value = ``
     })
-    document.addEventListener('update-recipes', this.update)
+    document.addEventListener('delete-recipe', e => this._delete(e))
+    this.recipes = await this.ds.getRecipes(
+      6,
+      this.$filter.value,
+      this._isFavorites
+    )
+    this._observe()
   }
   disconnectedCallback () {
     document.removeEventListener('update-recipes', this.update)
   }
-  _render (recipes = []) {
-    // TODO: not very efficient, too many loops
-    this.$recipeList.innerHTML = recipes.length
-      ? recipes
-        .map(
-          r =>
-            `<recipe-item class="tile is-parent is-4" title="${
-              r.title
-            }"></recipe-item>`
-        )
-        .join('')
-      : `<span class="recipe-title">Sorry, no recipes could be found.</span>`
-    this.$recipes = this._shadowRoot.querySelectorAll('recipe-item')
-    this.$recipes.forEach((r, i) => (r.recipe = recipes[i]))
+  _render (recipes = [], fresh) {
+    if (fresh) this.$recipeList.innerHTML = ``
+    recipes.forEach(r => {
+      const recipeItem = document.createElement('recipe-item')
+      recipeItem.classList.add('tile')
+      recipeItem.classList.add('is-parent')
+      recipeItem.classList.add('is-4')
+      recipeItem.setAttribute('data-id', r.id)
+      this.$recipeList.appendChild(recipeItem)
+      recipeItem.recipe = r
+    })
   }
-  _filter () {
+  async _filter () {
     const { value } = this.$filter
-    filter(this.$recipes, value)
+    this.ds.cursor = null
+    let recipes = await this.ds.getRecipes(6, value, this._isFavorites)
+    this._render(recipes, true)
   }
-  _favorites () {
-    this._render(this._recipes.filter(r => r.favorite))
+  _observe () {
+    // let observer = new window.IntersectionObserver(entry => this._next())
+    // let target = this._shadowRoot.querySelector('.lds-ring')
+    // observer.observe(target)
+    window.onscroll = () => {
+      let bottomOfWindow =
+        document.documentElement.scrollTop + window.innerHeight ===
+        document.documentElement.offsetHeight
+
+      if (bottomOfWindow) {
+        // Do something, anything!
+        this._next()
+      }
+    }
+  }
+  _delete (e) {
+    if (e.detail && e.detail.id) {
+      this._shadowRoot
+        .querySelector(`recipe-item[data-id='${e.detail.id}']`)
+        .remove()
+    }
+  }
+  async _next () {
+    if (!this.ds.cursor) return
+    const recipes = await this.ds.getRecipes(
+      6,
+      this.$filter.value,
+      this._isFavorites
+    )
+    this._render(recipes)
   }
   set recipes (data = []) {
-    if (data === this._recipes) return
     this._recipes = data
-    this._isFavorites ? this._favorites() : this._render(this._recipes)
+    this._render(this._recipes)
   }
   get recipes () {
     return this._recipes

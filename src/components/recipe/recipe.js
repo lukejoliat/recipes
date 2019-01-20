@@ -2,10 +2,11 @@
 import template from './recipe.html'
 import { showError } from '../../utils/utils'
 import { router } from '../../router'
-const DATA_SERVICE =
-  process.env.NODE_ENV === 'development'
-    ? require('../../utils/data-dev')
-    : require('../../utils/data')
+// const DATA_SERVICE =
+//   process.env.NODE_ENV === 'development'
+//     ? require('../../utils/data-dev')
+//     : require('../../utils/data')
+import DATA_SERVICE from '../../utils/data'
 export default class Recipe extends HTMLElement {
   constructor () {
     super()
@@ -13,6 +14,7 @@ export default class Recipe extends HTMLElement {
     this._recipe = null
   }
   connectedCallback () {
+    this.ds = new DATA_SERVICE()
     this._shadowRoot.innerHTML = template
     this._shadowRoot
       .querySelector('.delete-recipe')
@@ -40,10 +42,13 @@ export default class Recipe extends HTMLElement {
   async _delete () {
     if (!this._recipe) return
     try {
-      await DATA_SERVICE.deleteRecipe(this._recipe.id)
+      await this.ds.deleteRecipe(this._recipe.id)
       document.dispatchEvent(
-        new window.CustomEvent('update-recipes', {
-          bubbles: false
+        new window.CustomEvent('delete-recipe', {
+          bubbles: false,
+          detail: {
+            id: this._recipe.id
+          }
         })
       )
     } catch (e) {
@@ -57,13 +62,8 @@ export default class Recipe extends HTMLElement {
   async _toggleFavorite () {
     try {
       this._recipe.favorite
-        ? await DATA_SERVICE.unFavoriteRecipe(this._recipe.id)
-        : await DATA_SERVICE.favoriteRecipe(this._recipe.id)
-      document.dispatchEvent(
-        new window.CustomEvent('update-recipes', {
-          bubbles: false
-        })
-      )
+        ? await this.ds.unFavoriteRecipe(this._recipe.id)
+        : await this.ds.favoriteRecipe(this._recipe.id)
     } catch (e) {
       console.error(e)
       showError(
@@ -71,6 +71,12 @@ export default class Recipe extends HTMLElement {
         'There was a problem completing your request. Please, try again.'
       )
     }
+    this._recipe.favorite = !this._recipe.favorite
+    this._recipe.favorite
+      ? (this._shadowRoot.querySelector('.favorite-recipe').textContent =
+          'Unfavorite')
+      : (this._shadowRoot.querySelector('.favorite-recipe').textContent =
+          'Favorite')
   }
   get recipe () {
     return this._recipe
@@ -82,6 +88,13 @@ export default class Recipe extends HTMLElement {
       this._recipe.ingredients,
       this._recipe.image
     )
+  }
+  set favorite (value) {
+    value === true
+      ? (this._shadowRoot.querySelector('.favorite-recipe').textContent =
+          'Unfavorite')
+      : (this._shadowRoot.querySelector('.favorite-recipe').textContent =
+          'Favorite')
   }
 }
 

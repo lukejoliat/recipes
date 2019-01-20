@@ -2,10 +2,12 @@ import 'babel-polyfill'
 import './components/error/error'
 import './components/file-uploader/file-uploader'
 import content404 from './components/404/404.html'
-const DATA_SERVICE =
-  process.env.NODE_ENV === 'development'
-    ? require('./utils/data-dev')
-    : require('./utils/data')
+// const DATA_SERVICE =
+//   process.env.NODE_ENV === 'development'
+//     ? require('./utils/data-dev')
+//     : require('./utils/data')
+import DATA_SERVICE from './utils/data'
+const ds = new DATA_SERVICE()
 const $el = document.getElementById('app')
 
 const home = async () => {
@@ -13,7 +15,6 @@ const home = async () => {
   await import('./components/recipe-list/recipe-list')
   await import('./components/modal/modal.js')
   $el.innerHTML = `<recipe-list></recipe-list>`
-  $el.querySelector('recipe-list').recipes = await DATA_SERVICE.getRecipes()
 }
 
 const create = async () => {
@@ -36,15 +37,20 @@ const routes = {
   '/error': error404,
   '/edit': async function (params) {
     const id = params.get('id')
-    const recipe = await DATA_SERVICE.getRecipe(id)
+    const recipe = await ds.getRecipe(id)
     await edit()
     $el.querySelector('edit-recipe').recipe = recipe
   }
 }
 
 window.onpopstate = async () => {
-  // if (routes[window.location.pathname]) await routes[window.location.pathname]()
-  // else routes['/error']()
+  const url = new URL(
+    window.location.pathname + window.location.search,
+    window.location.origin
+  )
+  if (routes[window.location.pathname]) {
+    await routes[window.location.pathname](url.searchParams)
+  } else routes['/error']()
 }
 
 let onNavItemClick = async pathName => {

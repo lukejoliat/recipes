@@ -35,7 +35,8 @@ const editRecipe = recipe =>
     resolve()
   })
 
-const createRecipe = async (recipes = [], recipe) => {
+const createRecipe = async recipe => {
+  const recipes = await getRecipes()
   const id =
     '_' +
     Math.random()
@@ -69,10 +70,13 @@ const unFavoriteRecipe = id =>
     resolve()
   })
 
-const getRecipes = () =>
-  new Promise((resolve, reject) =>
-    resolve(JSON.parse(localStorage.getItem('recipes')) || [])
+const getRecipes = (start = 0, limit = 6) => {
+  const recipes = JSON.parse(localStorage.getItem('recipes')).slice(
+    start,
+    limit
   )
+  return new Promise((resolve, reject) => resolve(recipes || []))
+}
 
 export {
   deleteRecipe,
