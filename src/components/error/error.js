@@ -11,8 +11,8 @@ export default class Error extends HTMLElement {
   }
   connectedCallback () {
     this._shadowRoot.innerHTML = template
-    this._shadowRoot.querySelector('.error-message').innerHTML = this._message
-    this._shadowRoot.querySelector('.title').innerHTML = this._title
+    this._shadowRoot.querySelector('.error-message').innerText = this._message
+    this._shadowRoot.querySelector('.title').innerText = this._title
     this._shadowRoot
       .querySelector('.close')
       .addEventListener('click', () => this._hide())
@@ -24,10 +24,10 @@ export default class Error extends HTMLElement {
     if (this._shadowRoot) {
       switch (name) {
         case 'title':
-          this._shadowRoot.querySelector('.title').innerHTML = newValue
+          this._shadowRoot.querySelector('.title').innerText = newValue
           break
         case 'message':
-          this._shadowRoot.querySelector('.error-message').innerHTML = newValue
+          this._shadowRoot.querySelector('.error-message').innerText = newValue
           break
       }
     }

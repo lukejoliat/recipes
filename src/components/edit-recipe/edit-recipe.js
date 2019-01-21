@@ -3,10 +3,8 @@ import { router } from '../../router'
 import template from './edit-recipe.html'
 import { showError } from '../../utils/utils'
 import { isValidRecipe } from '../../models/RecipeModel'
-const DATA_SERVICE =
-  process.env.NODE_ENV === 'development'
-    ? require('../../utils/data-dev')
-    : require('../../utils/data')
+import DATA_SERVICE from '../../utils/data'
+
 export default class EditRecipe extends HTMLElement {
   constructor () {
     super()
@@ -17,6 +15,7 @@ export default class EditRecipe extends HTMLElement {
     this.$fileUploader = null
     this.$title = null
     this.$ingredients = null
+    this.ds = new DATA_SERVICE()
   }
   connectedCallback () {
     this._shadowRoot.innerHTML = template
@@ -39,7 +38,7 @@ export default class EditRecipe extends HTMLElement {
     if (isValidRecipe(recipe)) {
       e.preventDefault()
       try {
-        await DATA_SERVICE.editRecipe(recipe)
+        await this.ds.editRecipe(recipe)
         router.onNavItemClick('/')
       } catch (e) {
         console.error(e)
@@ -56,7 +55,7 @@ export default class EditRecipe extends HTMLElement {
   set recipe (recipe) {
     this._recipe = recipe
     if (!this._recipe) {
-      this._shadowRoot.innerHTML =
+      this._shadowRoot.innerText =
         '<strong>Sorry, the recipe could not be found.</strong>'
       return
     }

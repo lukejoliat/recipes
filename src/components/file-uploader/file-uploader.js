@@ -66,7 +66,7 @@ export default class FileUploader extends HTMLElement {
       console.error(e)
       this._shadowRoot.getElementById(
         'gallery'
-      ).innerHTML = `<span style="color: red;">Upload Failed: ${e}<span>`
+      ).innerText = `<span style="color: red;">Upload Failed: ${e}<span>`
     }
   }
   _handleDrop (e) {

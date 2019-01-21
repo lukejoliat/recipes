@@ -2,10 +2,6 @@
 import template from './recipe.html'
 import { showError } from '../../utils/utils'
 import { router } from '../../router'
-// const DATA_SERVICE =
-//   process.env.NODE_ENV === 'development'
-//     ? require('../../utils/data-dev')
-//     : require('../../utils/data')
 import DATA_SERVICE from '../../utils/data'
 export default class Recipe extends HTMLElement {
   constructor () {

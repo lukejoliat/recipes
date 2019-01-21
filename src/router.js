@@ -2,10 +2,6 @@ import 'babel-polyfill'
 import './components/error/error'
 import './components/file-uploader/file-uploader'
 import content404 from './components/404/404.html'
-// const DATA_SERVICE =
-//   process.env.NODE_ENV === 'development'
-//     ? require('./utils/data-dev')
-//     : require('./utils/data')
 import DATA_SERVICE from './utils/data'
 const ds = new DATA_SERVICE()
 const $el = document.getElementById('app')

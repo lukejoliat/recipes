@@ -80,18 +80,11 @@ export default class RecipeList extends HTMLElement {
     this._render(recipes, true)
   }
   _observe () {
-    // let observer = new window.IntersectionObserver(entry => this._next())
-    // let target = this._shadowRoot.querySelector('.lds-ring')
-    // observer.observe(target)
     window.onscroll = () => {
       let bottomOfWindow =
         document.documentElement.scrollTop + window.innerHeight ===
         document.documentElement.offsetHeight
-
-      if (bottomOfWindow) {
-        // Do something, anything!
-        this._next()
-      }
+      if (bottomOfWindow) this._next()
     }
   }
   _delete (e) {

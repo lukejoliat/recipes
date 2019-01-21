@@ -3,10 +3,6 @@ import { router } from '../../router'
 import template from './create-recipe.html'
 import { showError } from '../../utils/utils'
 import { isValidRecipe } from '../../models/RecipeModel'
-// const DATA_SERVICE =
-//   process.env.NODE_ENV === 'development'
-//     ? require('../../utils/data-dev')
-//     : require('../../utils/data')
 import DATA_SERVICE from '../../utils/data'
 export default class CreateRecipe extends HTMLElement {
   constructor () {
