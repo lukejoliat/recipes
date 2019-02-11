@@ -3,7 +3,8 @@ import template from './modal.html'
 export default class Modal extends HTMLElement {
   constructor () {
     super()
-    this._shadowRoot = this.attachShadow({ mode: 'open' })
+    this._shadowRoot = this
+    // this.attachShadow({ mode: 'open' })
     this._open = false
   }
   connectedCallback () {

@@ -9,17 +9,12 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "@babel/runtime": "^7.3.1",
+    "@babel/runtime-corejs2": "^7.3.1"
+  },
   "devDependencies": {
-    "@babel/cli": "^7.2.0",
-    "@babel/core": "^7.2.2",
-    "@babel/plugin-transform-regenerator": "^7.0.0",
-    "@babel/plugin-transform-runtime": "^7.2.0",
-    "@babel/preset-env": "^7.2.0",
-    "autoprefixer": "^9.4.4",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-eslint": "^10.0.1",
-    "babel-plugin-dynamic-import-node": "^2.2.0",
+    "bulma": "^0.7.4",
     "cssnano": "^4.1.7",
     "eslint": "^5.10.0",
     "eslint-config-standard": "^12.0.0",
@@ -28,7 +23,9 @@
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
     "postcss-modules": "^1.4.1",
-    "puppeteer": "^1.11.0",
     "sass": "^1.15.1"
-  }
+  },
+  "browserslist": [
+    "last 1 Chrome version"
+  ]
 }

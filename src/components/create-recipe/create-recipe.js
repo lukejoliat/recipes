@@ -7,9 +7,10 @@ import DATA_SERVICE from '../../utils/data'
 export default class CreateRecipe extends HTMLElement {
   constructor () {
     super()
-    this._shadowRoot = this.attachShadow({
-      mode: 'open'
-    })
+    this._shadowRoot = this
+    // this.attachShadow({
+    //   mode: 'open'
+    // })
     this._file = null
     this.$fileUploader = null
     this.ds = new DATA_SERVICE()

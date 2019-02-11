@@ -5,7 +5,8 @@ import DATA_SERVICE from '../../utils/data'
 export default class RecipeList extends HTMLElement {
   constructor () {
     super()
-    this._shadowRoot = this.attachShadow({ mode: 'open' })
+    this._shadowRoot = this
+    // this.attachShadow({ mode: 'open' })
     this._recipes = []
     this._isFavorites = false
     this.$recipeList = null

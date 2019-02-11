@@ -4,9 +4,10 @@ import { parse } from '../../utils/utils'
 export default class FileUploader extends HTMLElement {
   constructor () {
     super()
-    this._shadowRoot = this.attachShadow({
-      mode: 'open'
-    })
+    this._shadowRoot = this
+    // this.attachShadow({
+    //   mode: 'open'
+    // })
     this._file = null
     this._dropArea = null
     this._filesDone = 0

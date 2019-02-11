@@ -3,9 +3,10 @@ import template from './error.html'
 export default class Error extends HTMLElement {
   constructor () {
     super()
-    this._shadowRoot = this.attachShadow({
-      mode: 'open'
-    })
+    this._shadowRoot = this
+    // this.attachShadow({
+    //   mode: 'open'
+    // })
     this._message = this.getAttribute('message')
     this._title = this.getAttribute('title')
   }

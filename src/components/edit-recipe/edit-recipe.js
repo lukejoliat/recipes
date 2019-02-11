@@ -8,9 +8,10 @@ import DATA_SERVICE from '../../utils/data'
 export default class EditRecipe extends HTMLElement {
   constructor () {
     super()
-    this._shadowRoot = this.attachShadow({
-      mode: 'open'
-    })
+    this._shadowRoot = this
+    // this.attachShadow({
+    //   mode: 'open'
+    // })
     this._recipe = null
     this.$fileUploader = null
     this.$title = null
