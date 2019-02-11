@@ -1,4 +1,3 @@
-import 'babel-polyfill'
 import './components/error/error'
 import './components/file-uploader/file-uploader'
 import content404 from './components/404/404.html'

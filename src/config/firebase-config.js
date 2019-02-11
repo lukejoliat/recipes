@@ -1,4 +1,4 @@
-import * as firebase from 'firebase'
+/* global firebase */
 const config = {
   apiKey: 'AIzaSyCrLALh35T6Rb-0t4OQ_aqLRh7W8IhJMNc',
   authDomain: 'recipes-226405.firebaseapp.com',
