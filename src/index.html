@@ -1,77 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css"
-    />
-    <script
-      defer
-      src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
-    ></script>
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>SPA Demo</title>
-    <link rel="stylesheet" href="css/style.css" defer />
-  </head>
-  <body>
-    <div class="ui container">
-      <nav class="navbar" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-          <a class="navbar-item site-title" href="/test">
-            <strong>Recipes</strong>
-          </a>
-          <a
-            role="button"
-            class="navbar-burger burger"
-            aria-label="menu"
-            aria-expanded="false"
-            data-target="navbarBasicExample"
-          >
-            <span aria-hidden="true"></span> <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-          </a>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css" />
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>SPA Demo</title>
+  <link rel="stylesheet" href="css/style.css" defer />
+</head>
+
+<body>
+  <div class="ui container">
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item site-title" href="/test">
+          <strong>Recipes</strong>
+        </a>
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+          data-target="navbarBasicExample">
+          <span aria-hidden="true">test1</span> <span aria-hidden="true"></span>
+          <span aria-hidden="true">test2</span>
+          <span aria-hidden="true">test3</span>
+        </a>
+      </div>
+
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+          <a class="navbar-item" data-path="/"> Home </a>
+          <a class="navbar-item" data-path="/create"> Create </a>
         </div>
+      </div>
+    </nav>
+    <!-- Application Root -->
+    <error-message class="hidden"></error-message>
+    <div id="app"></div>
+    <span><i class="fas fa-angle-right"></i></span>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase.js"></script>
+  <script src="app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Get all "navbar-burger" elements
+      const $navbarBurgers = Array.prototype.slice.call(
+        document.querySelectorAll('.navbar-burger'),
+        0
+      )
 
-        <div id="navbarBasicExample" class="navbar-menu">
-          <div class="navbar-start">
-            <a class="navbar-item" data-path="/"> Home </a>
-            <a class="navbar-item" data-path="/create"> Create </a>
-          </div>
-        </div>
-      </nav>
-      <!-- Application Root -->
-      <error-message class="hidden"></error-message>
-      <div id="app"></div>
-      <span><i class="fas fa-angle-right"></i></span>
-    </div>
-    <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase.js"></script>
-    <script src="app.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        // Get all "navbar-burger" elements
-        const $navbarBurgers = Array.prototype.slice.call(
-          document.querySelectorAll('.navbar-burger'),
-          0
-        )
+      // Check if there are any navbar burgers
+      if ($navbarBurgers.length > 0) {
+        // Add a click event on each of them
+        $navbarBurgers.forEach(el => {
+          el.addEventListener('click', () => {
+            // Get the target from the "data-target" attribute
+            const target = el.dataset.target
+            const $target = document.getElementById(target)
 
-        // Check if there are any navbar burgers
-        if ($navbarBurgers.length > 0) {
-          // Add a click event on each of them
-          $navbarBurgers.forEach(el => {
-            el.addEventListener('click', () => {
-              // Get the target from the "data-target" attribute
-              const target = el.dataset.target
-              const $target = document.getElementById(target)
-
-              // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-              el.classList.toggle('is-active')
-              $target.classList.toggle('is-active')
-            })
+            // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+            el.classList.toggle('is-active')
+            $target.classList.toggle('is-active')
           })
-        }
-      })
-    </script>
-  </body>
+        })
+      }
+    })
+  </script>
+</body>
+
 </html>
